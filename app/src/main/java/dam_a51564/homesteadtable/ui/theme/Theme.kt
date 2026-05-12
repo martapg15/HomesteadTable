@@ -1,6 +1,5 @@
 package dam_a51564.homesteadtable.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -11,26 +10,65 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+private val LightColorScheme = lightColorScheme(
+    primary = Terracotta,
+    onPrimary = White,
+    primaryContainer = TerracottaLight,
+    onPrimaryContainer = Espresso,
+
+    secondary = BurntRed,
+    onSecondary = White,
+    secondaryContainer = BurntRedLight,
+    onSecondaryContainer = Espresso,
+
+    tertiary = WarmTan,
+    onTertiary = White,
+    tertiaryContainer = TerracottaMid,
+    onTertiaryContainer = Espresso,
+
+    background = Cream,
+    onBackground = Espresso,
+
+    surface = White,
+    onSurface = Espresso,
+    surfaceVariant = TerracottaLight,
+    onSurfaceVariant = WarmTan,
+
+    outline = ParchmentBorder,
+    outlineVariant = ParchmentBorder2,
+
+    error = BurntRed,
+    onError = White,
+    errorContainer = BurntRedLight,
+    onErrorContainer = Espresso,
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+private val DarkColorScheme = darkColorScheme(
+    primary = Terracotta,
+    onPrimary = Espresso,
+    primaryContainer = TerracottaDark,
+    onPrimaryContainer = TerracottaLight,
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    secondary = BurntRed,
+    onSecondary = Espresso,
+    secondaryContainer = BurntRedLight,
+    onSecondaryContainer = Espresso,
+
+    tertiary = LightTan,
+    onTertiary = Espresso,
+    tertiaryContainer = TerracottaDark,
+    onTertiaryContainer = TerracottaLight,
+
+    background = Espresso,
+    onBackground = Cream,
+
+    surface = Espresso,
+    onSurface = Cream,
+    surfaceVariant = LigtherBrown,
+    onSurfaceVariant = LightTan,
+
+    outline = TerracottaDark,
+    outlineVariant = WarmTan,
 )
 
 @Composable
