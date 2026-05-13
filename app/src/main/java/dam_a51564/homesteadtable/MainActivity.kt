@@ -1,5 +1,6 @@
 package dam_a51564.homesteadtable
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dam_a51564.homesteadtable.ui.screens.LoginScreen
+import dam_a51564.homesteadtable.ui.screens.LoginViewModel
 import dam_a51564.homesteadtable.ui.theme.HomesteadTableTheme
 
 class MainActivity : ComponentActivity() {
@@ -38,10 +41,20 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     )
 }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     HomesteadTableTheme {
         Greeting("Android")
+    }
+}*/
+
+@SuppressLint("ViewModelConstructorInComposable")
+@Preview(showBackground = true)
+@Composable
+fun LoginScreenPreview() {
+    HomesteadTableTheme {
+        val previewViewModel = LoginViewModel()
+        LoginScreen(loginViewModel = previewViewModel)
     }
 }
