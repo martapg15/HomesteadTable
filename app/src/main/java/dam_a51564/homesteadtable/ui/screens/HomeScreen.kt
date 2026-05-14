@@ -27,7 +27,12 @@ import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.ui.theme.*
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel, onNavigateToFavourites: () -> Unit, onNavigateToProfile: () -> Unit) {
+fun HomeScreen(
+    homeViewModel: HomeViewModel,
+    onNavigateToFavourites: () -> Unit,
+    onNavigateToProfile: () -> Unit,
+    onNavigateToAddRecipe: () -> Unit
+) {
     val homeUIState by homeViewModel.uiState.collectAsState()
 
     Scaffold(
@@ -174,7 +179,7 @@ fun HomeScreen(homeViewModel: HomeViewModel, onNavigateToFavourites: () -> Unit,
 
                 // "+" Button
                 Button(
-                    onClick = { /* TODO: Navigate to Create Recipe Screen */ },
+                    onClick = onNavigateToAddRecipe,
                     modifier = Modifier.size(56.dp), // Matches the default height of OutlinedTextField
                     shape = RoundedCornerShape(12.dp),
                     contentPadding = PaddingValues(0.dp),

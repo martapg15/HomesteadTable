@@ -5,6 +5,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dam_a51564.homesteadtable.ui.screens.AddRecipeScreen
+import dam_a51564.homesteadtable.ui.screens.AddRecipeViewModel
 import dam_a51564.homesteadtable.ui.screens.FavouritesScreen
 import dam_a51564.homesteadtable.ui.screens.FavouritesViewModel
 import dam_a51564.homesteadtable.ui.screens.HomeScreen
@@ -70,6 +72,9 @@ fun AppNavigation() {
                         launchSingleTop = true
                         restoreState = true
                     }
+                },
+                onNavigateToAddRecipe = {
+                    navController.navigate("add_recipe")
                 }
             )
         }
@@ -121,6 +126,15 @@ fun AppNavigation() {
                         popUpTo(0) { inclusive = true }
                     }
                 }
+            )
+        }
+
+        // Add recipe screen route
+        composable("add_recipe") {
+            val addRecipeViewModel: AddRecipeViewModel = viewModel()
+            AddRecipeScreen(
+                addRecipeViewModel = addRecipeViewModel,
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }
