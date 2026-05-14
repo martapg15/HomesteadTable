@@ -11,6 +11,8 @@ import dam_a51564.homesteadtable.ui.screens.HomeScreen
 import dam_a51564.homesteadtable.ui.screens.HomeViewModel
 import dam_a51564.homesteadtable.ui.screens.LoginScreen
 import dam_a51564.homesteadtable.ui.screens.LoginViewModel
+import dam_a51564.homesteadtable.ui.screens.ProfileScreen
+import dam_a51564.homesteadtable.ui.screens.ProfileViewModel
 import dam_a51564.homesteadtable.ui.screens.SignUpScreen
 import dam_a51564.homesteadtable.ui.screens.SignUpViewModel
 
@@ -61,17 +63,62 @@ fun AppNavigation() {
                         launchSingleTop = true
                         restoreState = true
                     }
+                },
+                onNavigateToProfile = {
+                    navController.navigate("profile") {
+                        popUpTo("home") { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             )
         }
 
+        // Favourites Screen Route
         composable("favourites") {
             val favouritesViewModel: FavouritesViewModel = viewModel()
             FavouritesScreen(
                 favouritesViewModel = favouritesViewModel,
                 onNavigateToHome = {
                     navController.navigate("home") {
-                        popUpTo("home") { inclusive = true }
+                        popUpTo("home") { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavigateToProfile = {
+                    navController.navigate("profile") {
+                        popUpTo("home") { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+
+        // Profile Screen Route
+        composable("profile") {
+            val profileViewModel: ProfileViewModel = viewModel()
+            ProfileScreen(
+                profileViewModel = profileViewModel,
+                onNavigateToHome = {
+                    navController.navigate("home") {
+                        popUpTo("home") { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavigateToFavourites = {
+                    navController.navigate("favourites") {
+                        popUpTo("home") { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onLogOutSuccess = {
+                    // Navigate to login and clear everything up to that point
+                    navController.navigate("login") {
+                        popUpTo(0) { inclusive = true }
                     }
                 }
             )

@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.ui.theme.*
 
 @Composable
-fun FavouritesScreen(favouritesViewModel: FavouritesViewModel, onNavigateToHome: () -> Unit) {
+fun FavouritesScreen(favouritesViewModel: FavouritesViewModel, onNavigateToHome: () -> Unit, onNavigateToProfile: () -> Unit) {
     val favouritesUIState by favouritesViewModel.uiState.collectAsState()
 
     Scaffold(
@@ -61,7 +61,7 @@ fun FavouritesScreen(favouritesViewModel: FavouritesViewModel, onNavigateToHome:
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = { /* TODO */ },
+                    onClick = onNavigateToProfile,
                     icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
                     label = { Text("Profile", style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(

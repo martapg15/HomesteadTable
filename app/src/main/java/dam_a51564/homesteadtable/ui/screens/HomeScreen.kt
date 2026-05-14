@@ -18,9 +18,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,11 +27,8 @@ import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.ui.theme.*
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel, onNavigateToFavourites: () -> Unit) {
+fun HomeScreen(homeViewModel: HomeViewModel, onNavigateToFavourites: () -> Unit, onNavigateToProfile: () -> Unit) {
     val homeUIState by homeViewModel.uiState.collectAsState()
-
-    // State to keep track of which bottom nav item is selected
-    var selectedBottomNavIndex by remember { mutableIntStateOf(0) }
 
     Scaffold(
         bottomBar = {
@@ -70,7 +64,7 @@ fun HomeScreen(homeViewModel: HomeViewModel, onNavigateToFavourites: () -> Unit)
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = { /* TODO */},
+                    onClick = onNavigateToProfile,
                     icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
                     label = { Text("Profile", style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
