@@ -5,15 +5,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dam_a51564.homesteadtable.navigation.AppNavigation
 import dam_a51564.homesteadtable.ui.screens.LoginScreen
 import dam_a51564.homesteadtable.ui.screens.LoginViewModel
+import dam_a51564.homesteadtable.ui.screens.SignUpScreen
+import dam_a51564.homesteadtable.ui.screens.SignUpViewModel
 import dam_a51564.homesteadtable.ui.theme.HomesteadTableTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,34 +20,15 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             HomesteadTableTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                HomesteadTableTheme {
+                    AppNavigation()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-/*@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    HomesteadTableTheme {
-        Greeting("Android")
-    }
-}*/
-
-@SuppressLint("ViewModelConstructorInComposable")
+/*@SuppressLint("ViewModelConstructorInComposable")
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
@@ -58,3 +37,10 @@ fun LoginScreenPreview() {
         LoginScreen(loginViewModel = previewViewModel)
     }
 }
+
+fun SignUpScreenPreview() {
+    HomesteadTableTheme {
+        val previewViewModel = SignUpViewModel()
+        SignUpScreen(signUpViewModel = previewViewModel)
+    }
+}*/
