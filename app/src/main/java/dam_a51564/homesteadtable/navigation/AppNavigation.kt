@@ -5,6 +5,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dam_a51564.homesteadtable.ui.screens.HomeScreen
+import dam_a51564.homesteadtable.ui.screens.HomeViewModel
 import dam_a51564.homesteadtable.ui.screens.LoginScreen
 import dam_a51564.homesteadtable.ui.screens.LoginViewModel
 import dam_a51564.homesteadtable.ui.screens.SignUpScreen
@@ -25,6 +27,12 @@ fun AppNavigation() {
                 loginViewModel = loginViewModel,
                 onNavigateToSignUp = {
                     navController.navigate("signup")
+                },
+                // Navigate to home and clear backstack so user can't go back to login
+                onLoginSuccess = {
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
                 }
             )
         }
@@ -38,6 +46,12 @@ fun AppNavigation() {
                     navController.popBackStack() // Goes back to Login
                 }
             )
+        }
+
+        // Home Screen Route
+        composable("home") {
+            val homeViewModel: HomeViewModel = viewModel()
+            HomeScreen(homeViewModel = homeViewModel)
         }
     }
 }

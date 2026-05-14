@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -16,8 +17,15 @@ import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.ui.theme.*
 
 @Composable
-fun LoginScreen(loginViewModel: LoginViewModel, onNavigateToSignUp: () -> Unit) {
+fun LoginScreen(loginViewModel: LoginViewModel, onNavigateToSignUp: () -> Unit, onLoginSuccess: () -> Unit) {
     val loginUIState by loginViewModel.uiState.collectAsState()
+
+    // Observe state changes: When isLoggedIn is true, trigger the navigation
+    LaunchedEffect(loginUIState.isLoggedIn) {
+        if (loginUIState.isLoggedIn) {
+            onLoginSuccess()
+        }
+    }
 
     Column(
         modifier = Modifier
