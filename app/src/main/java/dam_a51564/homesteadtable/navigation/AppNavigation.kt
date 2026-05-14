@@ -15,6 +15,8 @@ import dam_a51564.homesteadtable.ui.screens.LoginScreen
 import dam_a51564.homesteadtable.ui.screens.LoginViewModel
 import dam_a51564.homesteadtable.ui.screens.ProfileScreen
 import dam_a51564.homesteadtable.ui.screens.ProfileViewModel
+import dam_a51564.homesteadtable.ui.screens.RecipeDetailScreen
+import dam_a51564.homesteadtable.ui.screens.RecipeDetailViewModel
 import dam_a51564.homesteadtable.ui.screens.SignUpScreen
 import dam_a51564.homesteadtable.ui.screens.SignUpViewModel
 
@@ -75,6 +77,9 @@ fun AppNavigation() {
                 },
                 onNavigateToAddRecipe = {
                     navController.navigate("add_recipe")
+                },
+                onNavigateToRecipeDetail = {
+                    navController.navigate("recipe_detail")
                 }
             )
         }
@@ -134,6 +139,15 @@ fun AppNavigation() {
             val addRecipeViewModel: AddRecipeViewModel = viewModel()
             AddRecipeScreen(
                 addRecipeViewModel = addRecipeViewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        // Recipe detail screen route
+        composable("recipe_detail") {
+            val recipeDetailViewModel: RecipeDetailViewModel = viewModel()
+            RecipeDetailScreen(
+                viewModel = recipeDetailViewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
         }

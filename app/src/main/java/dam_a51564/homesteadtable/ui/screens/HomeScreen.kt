@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,7 +32,8 @@ fun HomeScreen(
     homeViewModel: HomeViewModel,
     onNavigateToFavourites: () -> Unit,
     onNavigateToProfile: () -> Unit,
-    onNavigateToAddRecipe: () -> Unit
+    onNavigateToAddRecipe: () -> Unit,
+    onNavigateToRecipeDetail: () -> Unit
 ) {
     val homeUIState by homeViewModel.uiState.collectAsState()
 
@@ -247,6 +249,36 @@ fun HomeScreen(
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp)
                     )
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(homeUIState.recipes) { recipeName ->
+                        // A simple clickable card to access the details
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onNavigateToRecipeDetail() },
+                            colors = CardDefaults.cardColors(containerColor = TerracottaLight),
+                            shape = RoundedCornerShape(16.dp)
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(
+                                    text = recipeName,
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    color = Espresso
+                                )
+                                Text(
+                                    text = "Tap to view full recipe",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = WarmTan,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
