@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.ui.theme.*
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel) {
+fun HomeScreen(homeViewModel: HomeViewModel, onNavigateToFavourites: () -> Unit) {
     val homeUIState by homeViewModel.uiState.collectAsState()
 
     // State to keep track of which bottom nav item is selected
@@ -43,8 +43,8 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
                 contentColor = Espresso
             ) {
                 NavigationBarItem(
-                    selected = selectedBottomNavIndex == 0,
-                    onClick = { selectedBottomNavIndex = 0 },
+                    selected = true,
+                    onClick = { /* Already here */ },
                     icon = { Icon(Icons.Default.Book, contentDescription = "Cookbook") },
                     label = { Text("CookBook", style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
@@ -56,8 +56,8 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
                     )
                 )
                 NavigationBarItem(
-                    selected = selectedBottomNavIndex == 1,
-                    onClick = { selectedBottomNavIndex = 1 },
+                    selected = false,
+                    onClick = onNavigateToFavourites,
                     icon = { Icon(Icons.Default.FavoriteBorder, contentDescription = "Favourites") },
                     label = { Text("Favourites", style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
@@ -69,8 +69,8 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
                     )
                 )
                 NavigationBarItem(
-                    selected = selectedBottomNavIndex == 2,
-                    onClick = { selectedBottomNavIndex = 2 },
+                    selected = false,
+                    onClick = { /* TODO */},
                     icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
                     label = { Text("Profile", style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(

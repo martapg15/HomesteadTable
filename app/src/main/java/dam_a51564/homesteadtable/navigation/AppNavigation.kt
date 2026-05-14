@@ -5,6 +5,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dam_a51564.homesteadtable.ui.screens.FavouritesScreen
+import dam_a51564.homesteadtable.ui.screens.FavouritesViewModel
 import dam_a51564.homesteadtable.ui.screens.HomeScreen
 import dam_a51564.homesteadtable.ui.screens.HomeViewModel
 import dam_a51564.homesteadtable.ui.screens.LoginScreen
@@ -51,7 +53,28 @@ fun AppNavigation() {
         // Home Screen Route
         composable("home") {
             val homeViewModel: HomeViewModel = viewModel()
-            HomeScreen(homeViewModel = homeViewModel)
+            HomeScreen(
+                homeViewModel = homeViewModel,
+                onNavigateToFavourites = {
+                    navController.navigate("favourites") {
+                        popUpTo("home") { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+
+        composable("favourites") {
+            val favouritesViewModel: FavouritesViewModel = viewModel()
+            FavouritesScreen(
+                favouritesViewModel = favouritesViewModel,
+                onNavigateToHome = {
+                    navController.navigate("home") {
+                        popUpTo("home") { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }

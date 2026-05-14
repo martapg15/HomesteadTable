@@ -1,0 +1,11 @@
+package dam_a51564.homesteadtable.ui.screens
+
+data class FavouritesUiState(
+    val searchQuery: String = "",
+    val selectedCategory: String = "All",
+    val favorites: List<String> = emptyList(),
+    val categories: List<String> = listOf("All", "Pasta", "Seafood", "Dessert", "Breakfast"),
+    val favouriteRecipes: List<String> = emptyList(),
+    val recipes: List<String> = emptyList(),
+    val isLoading: Boolean = false
+)
