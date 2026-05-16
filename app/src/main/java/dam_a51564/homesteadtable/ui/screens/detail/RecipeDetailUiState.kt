@@ -1,4 +1,4 @@
-package dam_a51564.homesteadtable.ui.screens
+package dam_a51564.homesteadtable.ui.screens.detail
 
 import dam_a51564.homesteadtable.model.Recipe
 

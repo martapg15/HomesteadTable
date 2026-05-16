@@ -1,11 +1,12 @@
-package dam_a51564.homesteadtable.ui.screens
+package dam_a51564.homesteadtable.ui.screens.home
 
 import dam_a51564.homesteadtable.model.Recipe
 
-data class FavouritesUiState(
+data class HomeUiState(
     val searchQuery: String = "",
     val selectedCategory: String = "All",
     val categories: List<String> = listOf("All", "Pasta", "Seafood", "Dessert", "Breakfast"),
-    val favouriteRecipes: List<Recipe> = emptyList(),
+    val recipes: List<Recipe> = emptyList(),
+    val favorites: List<Recipe> = emptyList(),
     val isLoading: Boolean = false
 )

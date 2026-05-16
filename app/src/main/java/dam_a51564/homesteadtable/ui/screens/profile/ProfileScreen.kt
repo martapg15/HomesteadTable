@@ -1,4 +1,4 @@
-package dam_a51564.homesteadtable.ui.screens
+package dam_a51564.homesteadtable.ui.screens.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.ui.theme.*
@@ -166,7 +166,7 @@ fun ProfileScreen(
                 shape = RoundedCornerShape(12.dp),
                 border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(
                     width = 1.5.dp,
-                    brush = androidx.compose.ui.graphics.SolidColor(BurntRed)
+                    brush = SolidColor(BurntRed)
                 ),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = BurntRed

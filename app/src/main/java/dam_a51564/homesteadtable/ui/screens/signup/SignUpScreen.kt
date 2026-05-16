@@ -1,4 +1,4 @@
-package dam_a51564.homesteadtable.ui.screens
+package dam_a51564.homesteadtable.ui.screens.signup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

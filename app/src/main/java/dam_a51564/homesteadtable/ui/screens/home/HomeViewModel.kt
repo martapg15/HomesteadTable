@@ -1,4 +1,4 @@
-package dam_a51564.homesteadtable.ui.screens
+package dam_a51564.homesteadtable.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,15 +9,20 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class FavouritesViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(FavouritesUiState())
-    val uiState: StateFlow<FavouritesUiState> = _uiState.asStateFlow()
+class HomeViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow(HomeUiState())
+    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     init {
-        // Collect from Repository and automatically filter for favourites
+        // Collect recipes from the repository as they change
         viewModelScope.launch {
-            RecipeRepository.recipes.collect { list ->
-                _uiState.update { it.copy(favouriteRecipes = list.filter { recipe -> recipe.isFavourite }) }
+            RecipeRepository.recipes.collect { recipeList ->
+                _uiState.update { state ->
+                    state.copy(
+                        recipes = recipeList,
+                        favorites = recipeList.filter { recipe -> recipe.isFavourite }
+                    )
+                }
             }
         }
     }

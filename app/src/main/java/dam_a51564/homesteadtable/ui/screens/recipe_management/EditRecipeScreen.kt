@@ -1,4 +1,4 @@
-package dam_a51564.homesteadtable.ui.screens
+package dam_a51564.homesteadtable.ui.screens.recipe_management
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

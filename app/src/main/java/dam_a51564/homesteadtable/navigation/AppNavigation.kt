@@ -5,22 +5,22 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import dam_a51564.homesteadtable.ui.screens.AddRecipeScreen
-import dam_a51564.homesteadtable.ui.screens.AddRecipeViewModel
-import dam_a51564.homesteadtable.ui.screens.EditRecipeScreen
-import dam_a51564.homesteadtable.ui.screens.EditRecipeViewModel
-import dam_a51564.homesteadtable.ui.screens.FavouritesScreen
-import dam_a51564.homesteadtable.ui.screens.FavouritesViewModel
-import dam_a51564.homesteadtable.ui.screens.HomeScreen
-import dam_a51564.homesteadtable.ui.screens.HomeViewModel
-import dam_a51564.homesteadtable.ui.screens.LoginScreen
-import dam_a51564.homesteadtable.ui.screens.LoginViewModel
-import dam_a51564.homesteadtable.ui.screens.ProfileScreen
-import dam_a51564.homesteadtable.ui.screens.ProfileViewModel
-import dam_a51564.homesteadtable.ui.screens.RecipeDetailScreen
-import dam_a51564.homesteadtable.ui.screens.RecipeDetailViewModel
-import dam_a51564.homesteadtable.ui.screens.SignUpScreen
-import dam_a51564.homesteadtable.ui.screens.SignUpViewModel
+import dam_a51564.homesteadtable.ui.screens.recipe_management.AddRecipeScreen
+import dam_a51564.homesteadtable.ui.screens.recipe_management.AddRecipeViewModel
+import dam_a51564.homesteadtable.ui.screens.recipe_management.EditRecipeScreen
+import dam_a51564.homesteadtable.ui.screens.recipe_management.EditRecipeViewModel
+import dam_a51564.homesteadtable.ui.screens.favourites.FavouritesScreen
+import dam_a51564.homesteadtable.ui.screens.favourites.FavouritesViewModel
+import dam_a51564.homesteadtable.ui.screens.home.HomeScreen
+import dam_a51564.homesteadtable.ui.screens.home.HomeViewModel
+import dam_a51564.homesteadtable.ui.screens.login.LoginScreen
+import dam_a51564.homesteadtable.ui.screens.login.LoginViewModel
+import dam_a51564.homesteadtable.ui.screens.profile.ProfileScreen
+import dam_a51564.homesteadtable.ui.screens.profile.ProfileViewModel
+import dam_a51564.homesteadtable.ui.screens.detail.RecipeDetailScreen
+import dam_a51564.homesteadtable.ui.screens.detail.RecipeDetailViewModel
+import dam_a51564.homesteadtable.ui.screens.signup.SignUpScreen
+import dam_a51564.homesteadtable.ui.screens.signup.SignUpViewModel
 
 @Composable
 fun AppNavigation() {
