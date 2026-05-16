@@ -25,8 +25,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,8 +55,8 @@ fun RecipeDetailScreen(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete Recipe", fontWeight = FontWeight.Bold, color = Espresso) },
-            text = { Text("Are you sure you want to delete recipe?", color = Espresso) },
+            title = { Text(stringResource(R.string.delete_recipe), fontWeight = FontWeight.Bold, color = Espresso) },
+            text = { Text(stringResource(R.string.delete_recipe_confirmation), color = Espresso) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -62,12 +64,12 @@ fun RecipeDetailScreen(
                         viewModel.deleteCurrentRecipe()
                     }
                 ) {
-                    Text("Yes, I'm sure", color = BurntRed, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.confirm_deletion), color = BurntRed, fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("No", color = Espresso)
+                    Text(stringResource(R.string.deny_deletion), color = Espresso)
                 }
             },
             containerColor = Cream
@@ -123,12 +125,12 @@ fun RecipeDetailScreen(
                 ) {
                     Column {
                         Text(
-                            "Portions",
+                            stringResource(R.string.portions),
                             style = MaterialTheme.typography.labelMedium,
                             color = WarmTan
                         )
                         Text(
-                            "${uiState.currentServings} Servings",
+                            stringResource(R.string.servings_info, uiState.currentServings),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = Espresso
@@ -163,7 +165,7 @@ fun RecipeDetailScreen(
             if (recipe.equipment.isNotEmpty()) {
                 item {
                     Text(
-                        "Equipment",
+                        stringResource(R.string.equipment),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = Espresso
@@ -216,7 +218,7 @@ fun RecipeDetailScreen(
                         contentPadding = PaddingValues(vertical = 12.dp)
                     ) {
                         Text(
-                            "Ingredients",
+                            stringResource(R.string.ingredients),
                             fontWeight = if (isIngredients) FontWeight.Bold else FontWeight.Medium
                         )
                     }
@@ -233,7 +235,7 @@ fun RecipeDetailScreen(
                         contentPadding = PaddingValues(vertical = 12.dp)
                     ) {
                         Text(
-                            "Steps (${recipe.instructions.size})",
+                            stringResource(R.string.steps, recipe.instructions.size),
                             fontWeight = if (!isIngredients) FontWeight.Bold else FontWeight.Medium
                         )
                     }
@@ -245,7 +247,9 @@ fun RecipeDetailScreen(
             if (uiState.selectedTab == DetailTab.INGREDIENTS) {
                 items(recipe.ingredients) { ingredient ->
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
@@ -266,7 +270,9 @@ fun RecipeDetailScreen(
             } else {
                 itemsIndexed(recipe.instructions) { index, step ->
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         Surface(
@@ -296,13 +302,15 @@ fun RecipeDetailScreen(
                 Spacer(modifier = Modifier.height(32.dp))
                 Button(
                     onClick = { showDeleteDialog = true }, // Triggers state change for pop-up
-                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = BurntRed),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Cream)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("DELETE RECIPE", color = Cream, style = MaterialTheme.typography.labelLarge)
+                    Text(stringResource(R.string.btn_delete_recipe), color = Cream, style = MaterialTheme.typography.labelLarge)
                 }
                 Spacer(modifier = Modifier.height(40.dp))
             }

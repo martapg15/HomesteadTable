@@ -23,9 +23,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
 @Composable
@@ -48,7 +50,7 @@ fun HomeScreen(
                     selected = true,
                     onClick = { /* Already here */ },
                     icon = { Icon(Icons.Default.Book, contentDescription = "Cookbook") },
-                    label = { Text("CookBook", style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(stringResource(R.string.btn_cookbook), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Cream,
                         selectedTextColor = Terracotta,
@@ -61,7 +63,7 @@ fun HomeScreen(
                     selected = false,
                     onClick = onNavigateToFavourites,
                     icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favourites") },
-                    label = { Text("Favourites", style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(stringResource(R.string.btn_favourites), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Cream,
                         selectedTextColor = Terracotta,
@@ -74,7 +76,7 @@ fun HomeScreen(
                     selected = false,
                     onClick = onNavigateToProfile,
                     icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
-                    label = { Text("Profile", style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(stringResource(R.string.btn_profile), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Cream,
                         selectedTextColor = Terracotta,
@@ -98,7 +100,7 @@ fun HomeScreen(
 
             // Header with Recipe Count
             Text(
-                text = "My Cookbook,",
+                text = stringResource(R.string.my_cookbook),
                 style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.padding(top = 20.dp)
@@ -113,9 +115,12 @@ fun HomeScreen(
             ) {
                 // List of data to loop through to avoid repeating UI code 3 times
                 val stats = listOf(
-                    Triple(homeUIState.recipes.size, "Recipes", Icons.Default.Book),
-                    Triple(homeUIState.favorites.size, "Favourites", Icons.Filled.Favorite),
-                    Triple(homeUIState.categories.size, "Categories", Icons.AutoMirrored.Filled.Label)
+                    Triple(homeUIState.recipes.size,
+                        stringResource(R.string.recipes_info), Icons.Default.Book),
+                    Triple(homeUIState.favorites.size,
+                        stringResource(R.string.favourites_info1), Icons.Filled.Favorite),
+                    Triple(homeUIState.categories.size,
+                        stringResource(R.string.categories_info), Icons.AutoMirrored.Filled.Label)
                 )
 
                 stats.forEach { (count, label, icon) ->
@@ -168,7 +173,7 @@ fun HomeScreen(
                     value = homeUIState.searchQuery,
                     onValueChange = { homeViewModel.onSearchQueryChange(it) },
                     modifier = Modifier.weight(1f),
-                    placeholder = { Text("Search your recipes", color = LightTan) },
+                    placeholder = { Text(stringResource(R.string.search_your_recipes), color = LightTan) },
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = LightTan) },
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedBorderColor = ParchmentBorder,
@@ -239,12 +244,12 @@ fun HomeScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Your cookbook is empty.",
+                        text = stringResource(R.string.cookbook_empty),
                         style = MaterialTheme.typography.headlineSmall,
                         color = Espresso
                     )
                     Text(
-                        text = "Tap the '+' button to add your first family recipe.",
+                        text = stringResource(R.string.cookbook_info),
                         style = MaterialTheme.typography.bodyMedium,
                         color = WarmTan,
                         textAlign = TextAlign.Center,
@@ -278,7 +283,7 @@ fun HomeScreen(
                                         color = Espresso
                                     )
                                     Text(
-                                        text = "Tap to view full recipe",
+                                        text = stringResource(R.string.recipe_description),
                                         style = MaterialTheme.typography.labelMedium,
                                         color = WarmTan,
                                         modifier = Modifier.padding(top = 4.dp)

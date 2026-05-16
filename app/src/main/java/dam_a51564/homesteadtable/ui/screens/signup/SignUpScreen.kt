@@ -9,10 +9,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
 @Composable
@@ -29,26 +31,26 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigateBack: () -> Unit) {
         Spacer(modifier = Modifier.height(60.dp))
 
         Text(
-            text = "Create Account,",
+            text = stringResource(R.string.create_account),
             style = MaterialTheme.typography.displayMedium, // ExtraBold Espresso
             fontWeight = FontWeight.ExtraBold
         )
         Text(
-            text = "Join the Homestead Table",
+            text = stringResource(R.string.signup_info),
             style = MaterialTheme.typography.bodyLarge,
-            color = WarmTan, //
+            color = WarmTan,
             modifier = Modifier.padding(top = 8.dp)
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         // Username Field
-        Text("Username", style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.username_field), style = MaterialTheme.typography.labelMedium)
         OutlinedTextField(
             value = signUpUIState.fullName,
             onValueChange = { signUpViewModel.onUsernameChange(it) },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("Enter username", color = LightTan) },
+            placeholder = { Text(stringResource(R.string.enter_your_username), color = LightTan) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = ParchmentBorder,
                 focusedBorderColor = Terracotta
@@ -58,13 +60,13 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigateBack: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // Email Field
-        Text("Email", style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.email_field), style = MaterialTheme.typography.labelMedium)
         OutlinedTextField(
             value = signUpUIState.email,
             onValueChange = { signUpViewModel.onEmailChange(it) },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            placeholder = { Text("Enter email", color = LightTan) },
+            placeholder = { Text(stringResource(R.string.enter_your_email), color = LightTan) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = ParchmentBorder,
                 focusedBorderColor = Terracotta
@@ -74,7 +76,7 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigateBack: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // Password Fields
-        Text("Password", style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.password_field), style = MaterialTheme.typography.labelMedium)
         OutlinedTextField(
             value = signUpUIState.password,
             onValueChange = { signUpViewModel.onPasswordChange(it) },
@@ -88,7 +90,7 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigateBack: () -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text("Confirm Password", style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.confirm_password), style = MaterialTheme.typography.labelMedium)
         OutlinedTextField(
             value = signUpUIState.confirmPassword,
             onValueChange = { signUpViewModel.onConfirmPasswordChange(it) },
@@ -106,14 +108,16 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigateBack: () -> Unit) {
         Button(
             onClick = { signUpViewModel.onSignUpClick() },
             enabled = !signUpUIState.isLoading,
-            modifier = Modifier.fillMaxWidth().height(56.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Terracotta),
             shape = MaterialTheme.shapes.medium
         ) {
             if (signUpUIState.isLoading) {
                 CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
             } else {
-                Text("SIGN UP", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.btn1_sign_up), style = MaterialTheme.typography.labelLarge)
             }
         }
 
@@ -122,7 +126,9 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigateBack: () -> Unit) {
                 text = signUpUIState.errorMessage!!,
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(top = 8.dp).align(Alignment.CenterHorizontally)
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .align(Alignment.CenterHorizontally)
             )
         }
 
@@ -131,12 +137,12 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigateBack: () -> Unit) {
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                "Already have an Account? ",
+                stringResource(R.string.already_have_an_account),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 16.dp)
             )
             TextButton(onClick = onNavigateBack) {
-                Text("Log In", color = Terracotta, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.btn1_log_in), color = Terracotta, fontWeight = FontWeight.Bold)
             }
         }
     }

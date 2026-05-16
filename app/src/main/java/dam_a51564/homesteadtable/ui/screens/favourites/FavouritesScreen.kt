@@ -20,9 +20,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
 @Composable
@@ -44,7 +46,7 @@ fun FavouritesScreen(
                     selected = false,
                     onClick = onNavigateToHome,
                     icon = { Icon(Icons.Default.Book, contentDescription = "CookBook") },
-                    label = { Text("CookBook", style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(stringResource(R.string.btn_cookbook), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Cream,
                         selectedTextColor = Terracotta,
@@ -57,7 +59,7 @@ fun FavouritesScreen(
                     selected = true, // Favourites is currently selected
                     onClick = { /* Already here */ },
                     icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favourites") },
-                    label = { Text("Favourites", style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(stringResource(R.string.btn_favourites), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Cream,
                         selectedTextColor = Terracotta,
@@ -70,7 +72,7 @@ fun FavouritesScreen(
                     selected = false,
                     onClick = onNavigateToProfile,
                     icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
-                    label = { Text("Profile", style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(stringResource(R.string.btn_profile), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Cream,
                         selectedTextColor = Terracotta,
@@ -93,13 +95,16 @@ fun FavouritesScreen(
 
             // Header
             Text(
-                text = "My Favourites,",
+                text = stringResource(R.string.my_favourites),
                 style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.padding(top = 20.dp)
             )
             Text(
-                text = "${favouritesUIState.favouriteRecipes.size} saved recipes",
+                text = stringResource(
+                    R.string.saved_recipes_info,
+                    favouritesUIState.favouriteRecipes.size
+                ),
                 style = MaterialTheme.typography.bodyLarge,
                 color = WarmTan,
                 modifier = Modifier.padding(top = 4.dp)
@@ -112,7 +117,7 @@ fun FavouritesScreen(
                 value = favouritesUIState.searchQuery,
                 onValueChange = { favouritesViewModel.onSearchQueryChange(it) },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Search your favourites", color = LightTan) },
+                placeholder = { Text(stringResource(R.string.search_your_favourites), color = LightTan) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = LightTan) },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = ParchmentBorder,
@@ -168,14 +173,14 @@ fun FavouritesScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "No Favourites Yet",
+                        text = stringResource(R.string.no_favourites),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.ExtraBold,
                         color = Espresso
                     )
 
                     Text(
-                        text = "Recipes you love will appear here.\nTap the ♡ on any recipe to save it.",
+                        text = stringResource(R.string.favourites_info),
                         style = MaterialTheme.typography.bodyMedium,
                         color = WarmTan,
                         textAlign = TextAlign.Center,

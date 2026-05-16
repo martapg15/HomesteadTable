@@ -16,8 +16,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import dam_a51564.homesteadtable.R
+import dam_a51564.homesteadtable.model.RecipeUnits
 import dam_a51564.homesteadtable.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +32,7 @@ fun AddRecipeScreen(
     val uiState by addRecipeViewModel.uiState.collectAsState()
     val recipe = uiState.recipe
 
-    val unitOptions = listOf("g", "kg", "ml", "L", "tbsp", "tsp", "cup", "unit")
+    val unitOptions = RecipeUnits.list
 
     // Navigate back when recipe is saved successfully
     LaunchedEffect(uiState.isSaved) {
@@ -41,7 +44,7 @@ fun AddRecipeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("New Recipe", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold) },
+                title = { Text(stringResource(R.string.new_recipe), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go Back", tint = Espresso)
@@ -63,13 +66,13 @@ fun AddRecipeScreen(
 
             // Basic Info Section
             item {
-                Text("Basic Information", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+                Text(stringResource(R.string.basic_information_section), style = MaterialTheme.typography.titleMedium, color = WarmTan)
                 Spacer(modifier = Modifier.height(8.dp))
 
                 OutlinedTextField(
                     value = recipe.title,
                     onValueChange = { addRecipeViewModel.onTitleChange(it) },
-                    label = { Text("Recipe Title") },
+                    label = { Text(stringResource(R.string.recipe_title)) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                 )
@@ -85,8 +88,10 @@ fun AddRecipeScreen(
                         value = recipe.category,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Category") },
-                        modifier = Modifier.fillMaxWidth().menuAnchor(),
+                        label = { Text(stringResource(R.string.category)) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(),
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = uiState.isCategoryExpanded) },
                         colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                     )
@@ -112,7 +117,7 @@ fun AddRecipeScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Base Portions (Servings)", style = MaterialTheme.typography.labelLarge, color = Espresso)
+                    Text(stringResource(R.string.base_portions), style = MaterialTheme.typography.labelLarge, color = Espresso)
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         FilledIconButton(
                             onClick = { if (recipe.baseServings > 1) addRecipeViewModel.onServingsChange(recipe.baseServings - 1) },
@@ -137,7 +142,7 @@ fun AddRecipeScreen(
             item {
                 HorizontalDivider(color = ParchmentBorder, thickness = 0.5.dp)
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("Ingredients", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+                Text(stringResource(R.string.ingredients), style = MaterialTheme.typography.titleMedium, color = WarmTan)
             }
 
             itemsIndexed(recipe.ingredients) { index, ingredient ->
@@ -151,7 +156,7 @@ fun AddRecipeScreen(
                             OutlinedTextField(
                                 value = ingredient.name,
                                 onValueChange = { addRecipeViewModel.updateIngredient(index, ingredient.copy(name = it)) },
-                                label = { Text("Ingredient Name") },
+                                label = { Text(stringResource(R.string.ingredient_name)) },
                                 modifier = Modifier.weight(1f),
                                 colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                             )
@@ -163,7 +168,7 @@ fun AddRecipeScreen(
                             OutlinedTextField(
                                 value = ingredient.quantity,
                                 onValueChange = { addRecipeViewModel.updateIngredient(index, ingredient.copy(quantity = it)) },
-                                label = { Text("Quantity") },
+                                label = { Text(stringResource(R.string.quantity)) },
                                 modifier = Modifier.weight(1f),
                                 colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                             )
@@ -178,7 +183,7 @@ fun AddRecipeScreen(
                                     value = ingredient.unit,
                                     onValueChange = {},
                                     readOnly = true,
-                                    label = { Text("Unit") },
+                                    label = { Text(stringResource(R.string.unit)) },
                                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                                     modifier = Modifier.menuAnchor(),
                                     colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
@@ -208,7 +213,7 @@ fun AddRecipeScreen(
                 TextButton(onClick = { addRecipeViewModel.addIngredient() }, modifier = Modifier.fillMaxWidth()) {
                     Icon(Icons.Default.Add, null, tint = Terracotta)
                     Spacer(Modifier.width(8.dp))
-                    Text("Add new ingredient", color = Terracotta, style = MaterialTheme.typography.labelLarge)
+                    Text(stringResource(R.string.btn_add_new_ingredient), color = Terracotta, style = MaterialTheme.typography.labelLarge)
                 }
             }
 
@@ -216,7 +221,7 @@ fun AddRecipeScreen(
             item {
                 HorizontalDivider(color = ParchmentBorder, thickness = 0.5.dp)
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("Equipment", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+                Text(stringResource(R.string.equipment), style = MaterialTheme.typography.titleMedium, color = WarmTan)
             }
 
             itemsIndexed(recipe.equipment) { index, item ->
@@ -224,7 +229,7 @@ fun AddRecipeScreen(
                     OutlinedTextField(
                         value = item,
                         onValueChange = { addRecipeViewModel.updateEquipment(index, it) },
-                        label = { Text("Equipment Name") },
+                        label = { Text(stringResource(R.string.equipment_name)) },
                         modifier = Modifier.weight(1f),
                         colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                     )
@@ -238,7 +243,7 @@ fun AddRecipeScreen(
                 TextButton(onClick = { addRecipeViewModel.addEquipment() }, modifier = Modifier.fillMaxWidth()) {
                     Icon(Icons.Default.Add, null, tint = Terracotta)
                     Spacer(Modifier.width(8.dp))
-                    Text("Add new equipment", color = Terracotta, style = MaterialTheme.typography.labelLarge)
+                    Text(stringResource(R.string.btn_add_new_equipment), color = Terracotta, style = MaterialTheme.typography.labelLarge)
                 }
             }
 
@@ -246,7 +251,7 @@ fun AddRecipeScreen(
             item {
                 HorizontalDivider(color = ParchmentBorder, thickness = 0.5.dp)
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("Instructions", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+                Text(stringResource(R.string.instructions), style = MaterialTheme.typography.titleMedium, color = WarmTan)
             }
 
             itemsIndexed(recipe.instructions) { index, step ->
@@ -254,8 +259,10 @@ fun AddRecipeScreen(
                     OutlinedTextField(
                         value = step,
                         onValueChange = { addRecipeViewModel.updateInstruction(index, it) },
-                        label = { Text("Step ${index + 1}") },
-                        modifier = Modifier.weight(1f).heightIn(min = 100.dp),
+                        label = { Text(stringResource(R.string.recipe_step, index + 1)) },
+                        modifier = Modifier
+                            .weight(1f)
+                            .heightIn(min = 100.dp),
                         maxLines = 5,
                         colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                     )
@@ -269,7 +276,7 @@ fun AddRecipeScreen(
                 TextButton(onClick = { addRecipeViewModel.addInstruction() }, modifier = Modifier.fillMaxWidth()) {
                     Icon(Icons.Default.Add, null, tint = Terracotta)
                     Spacer(Modifier.width(8.dp))
-                    Text("Add new step", color = Terracotta, style = MaterialTheme.typography.labelLarge)
+                    Text(stringResource(R.string.btn_add_new_step), color = Terracotta, style = MaterialTheme.typography.labelLarge)
                 }
             }
 
@@ -282,14 +289,16 @@ fun AddRecipeScreen(
                 Button(
                     onClick = { addRecipeViewModel.onSaveRecipe() },
                     enabled = !uiState.isSaving,
-                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Terracotta)
                 ) {
                     if (uiState.isSaving) {
                         CircularProgressIndicator(color = Cream, modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
                     } else {
-                        Text("SAVE RECIPE", style = MaterialTheme.typography.labelLarge)
+                        Text(stringResource(R.string.btn_save_recipe), style = MaterialTheme.typography.labelLarge)
                     }
                 }
                 Spacer(modifier = Modifier.height(40.dp))

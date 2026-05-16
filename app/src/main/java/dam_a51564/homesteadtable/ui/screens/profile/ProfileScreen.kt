@@ -17,8 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
 @Composable
@@ -40,7 +42,7 @@ fun ProfileScreen(
                     selected = false,
                     onClick = onNavigateToHome,
                     icon = { Icon(Icons.Default.Book, contentDescription = "CookBook") },
-                    label = { Text("CookBook", style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(stringResource(R.string.btn_cookbook), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Cream,
                         selectedTextColor = Terracotta,
@@ -53,7 +55,7 @@ fun ProfileScreen(
                     selected = false,
                     onClick = onNavigateToFavourites,
                     icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favourites") },
-                    label = { Text("Favourites", style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(stringResource(R.string.btn_favourites), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Cream,
                         selectedTextColor = Terracotta,
@@ -66,7 +68,7 @@ fun ProfileScreen(
                     selected = true, // Profile is selected
                     onClick = { /* Already here */ },
                     icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
-                    label = { Text("Profile", style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(stringResource(R.string.btn_profile), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Cream,
                         selectedTextColor = Terracotta,
@@ -90,7 +92,7 @@ fun ProfileScreen(
 
             // Header
             Text(
-                text = "My Profile",
+                text = stringResource(R.string.my_profile),
                 style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.padding(top = 20.dp)
@@ -125,7 +127,7 @@ fun ProfileScreen(
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        text = "NAME",
+                        text = stringResource(R.string.name_info),
                         style = MaterialTheme.typography.labelSmall,
                         color = WarmTan
                     )
@@ -139,7 +141,7 @@ fun ProfileScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "EMAIL",
+                        text = stringResource(R.string.email_info),
                         style = MaterialTheme.typography.labelSmall,
                         color = WarmTan
                     )
@@ -179,7 +181,7 @@ fun ProfileScreen(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "LOG OUT",
+                    text = stringResource(R.string.btn_log_out),
                     style = MaterialTheme.typography.labelLarge,
                     color = BurntRed
                 )

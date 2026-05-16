@@ -16,8 +16,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import dam_a51564.homesteadtable.R
+import dam_a51564.homesteadtable.model.RecipeUnits
 import dam_a51564.homesteadtable.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,7 +31,8 @@ fun EditRecipeScreen(
 ) {
     val uiState by editRecipeViewModel.uiState.collectAsState()
     val recipe = uiState.recipe
-    val unitOptions = listOf("g", "kg", "ml", "L", "tbsp", "tsp", "cup", "unit")
+
+    val unitOptions = RecipeUnits.list
 
     LaunchedEffect(uiState.isSaved) {
         if (uiState.isSaved) {
@@ -44,7 +48,7 @@ fun EditRecipeScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Edit Recipe", fontWeight = FontWeight.Bold, color = Espresso) },
+                    title = { Text(stringResource(R.string.edit_recipe), fontWeight = FontWeight.Bold, color = Espresso) },
                     navigationIcon = {
                         IconButton(onClick = onNavigateBack) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Espresso)
@@ -64,13 +68,13 @@ fun EditRecipeScreen(
             ) {
                 // Basic Info Section
                 item {
-                    Text("Basic Information", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+                    Text(stringResource(R.string.basic_information_section), style = MaterialTheme.typography.titleMedium, color = WarmTan)
                     Spacer(modifier = Modifier.height(8.dp))
 
                     OutlinedTextField(
                         value = recipe.title,
                         onValueChange = { editRecipeViewModel.onTitleChange(it) },
-                        label = { Text("Recipe Title") },
+                        label = { Text(stringResource(R.string.recipe_title)) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                     )
@@ -86,8 +90,10 @@ fun EditRecipeScreen(
                             value = recipe.category,
                             onValueChange = {},
                             readOnly = true,
-                            label = { Text("Category") },
-                            modifier = Modifier.fillMaxWidth().menuAnchor(),
+                            label = { Text(stringResource(R.string.category)) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .menuAnchor(),
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = uiState.isCategoryExpanded) },
                             colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                         )
@@ -113,7 +119,7 @@ fun EditRecipeScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("Base Portions (Servings)", style = MaterialTheme.typography.labelLarge, color = Espresso)
+                        Text(stringResource(R.string.base_portions), style = MaterialTheme.typography.labelLarge, color = Espresso)
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             FilledIconButton(
                                 onClick = { if (recipe.baseServings > 1) editRecipeViewModel.onServingsChange(recipe.baseServings - 1) },
@@ -138,7 +144,7 @@ fun EditRecipeScreen(
                 item {
                     HorizontalDivider(color = ParchmentBorder, thickness = 0.5.dp)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("Ingredients", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+                    Text(stringResource(R.string.ingredients), style = MaterialTheme.typography.titleMedium, color = WarmTan)
                 }
 
                 itemsIndexed(recipe.ingredients) { index, ingredient ->
@@ -152,7 +158,7 @@ fun EditRecipeScreen(
                                 OutlinedTextField(
                                     value = ingredient.name,
                                     onValueChange = { editRecipeViewModel.updateIngredient(index, ingredient.copy(name = it)) },
-                                    label = { Text("Ingredient Name") },
+                                    label = { Text(stringResource(R.string.ingredient_name)) },
                                     modifier = Modifier.weight(1f),
                                     colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                                 )
@@ -164,7 +170,7 @@ fun EditRecipeScreen(
                                 OutlinedTextField(
                                     value = ingredient.quantity,
                                     onValueChange = { editRecipeViewModel.updateIngredient(index, ingredient.copy(quantity = it)) },
-                                    label = { Text("Quantity") },
+                                    label = { Text(stringResource(R.string.quantity)) },
                                     modifier = Modifier.weight(1f),
                                     colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                                 )
@@ -179,7 +185,7 @@ fun EditRecipeScreen(
                                         value = ingredient.unit,
                                         onValueChange = {},
                                         readOnly = true,
-                                        label = { Text("Unit") },
+                                        label = { Text(stringResource(R.string.unit)) },
                                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                                         modifier = Modifier.menuAnchor(),
                                         colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
@@ -209,7 +215,7 @@ fun EditRecipeScreen(
                     TextButton(onClick = { editRecipeViewModel.addIngredient() }, modifier = Modifier.fillMaxWidth()) {
                         Icon(Icons.Default.Add, null, tint = Terracotta)
                         Spacer(Modifier.width(8.dp))
-                        Text("Add new ingredient", color = Terracotta, style = MaterialTheme.typography.labelLarge)
+                        Text(stringResource(R.string.btn_add_new_ingredient), color = Terracotta, style = MaterialTheme.typography.labelLarge)
                     }
                 }
 
@@ -217,7 +223,7 @@ fun EditRecipeScreen(
                 item {
                     HorizontalDivider(color = ParchmentBorder, thickness = 0.5.dp)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("Equipment", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+                    Text(stringResource(R.string.equipment), style = MaterialTheme.typography.titleMedium, color = WarmTan)
                 }
 
                 itemsIndexed(recipe.equipment) { index, item ->
@@ -225,7 +231,7 @@ fun EditRecipeScreen(
                         OutlinedTextField(
                             value = item,
                             onValueChange = { editRecipeViewModel.updateEquipment(index, it) },
-                            label = { Text("Equipment Name") },
+                            label = { Text(stringResource(R.string.equipment_name)) },
                             modifier = Modifier.weight(1f),
                             colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                         )
@@ -239,7 +245,7 @@ fun EditRecipeScreen(
                     TextButton(onClick = { editRecipeViewModel.addEquipment() }, modifier = Modifier.fillMaxWidth()) {
                         Icon(Icons.Default.Add, null, tint = Terracotta)
                         Spacer(Modifier.width(8.dp))
-                        Text("Add new equipment", color = Terracotta, style = MaterialTheme.typography.labelLarge)
+                        Text(stringResource(R.string.btn_add_new_equipment), color = Terracotta, style = MaterialTheme.typography.labelLarge)
                     }
                 }
 
@@ -247,7 +253,7 @@ fun EditRecipeScreen(
                 item {
                     HorizontalDivider(color = ParchmentBorder, thickness = 0.5.dp)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("Instructions", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+                    Text(stringResource(R.string.instructions), style = MaterialTheme.typography.titleMedium, color = WarmTan)
                 }
 
                 itemsIndexed(recipe.instructions) { index, step ->
@@ -255,8 +261,10 @@ fun EditRecipeScreen(
                         OutlinedTextField(
                             value = step,
                             onValueChange = { editRecipeViewModel.updateInstruction(index, it) },
-                            label = { Text("Step ${index + 1}") },
-                            modifier = Modifier.weight(1f).heightIn(min = 100.dp),
+                            label = { Text(stringResource(R.string.recipe_step, index + 1)) },
+                            modifier = Modifier
+                                .weight(1f)
+                                .heightIn(min = 100.dp),
                             maxLines = 5,
                             colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                         )
@@ -270,7 +278,7 @@ fun EditRecipeScreen(
                     TextButton(onClick = { editRecipeViewModel.addInstruction() }, modifier = Modifier.fillMaxWidth()) {
                         Icon(Icons.Default.Add, null, tint = Terracotta)
                         Spacer(Modifier.width(8.dp))
-                        Text("Add new step", color = Terracotta, style = MaterialTheme.typography.labelLarge)
+                        Text(stringResource(R.string.btn_add_new_step), color = Terracotta, style = MaterialTheme.typography.labelLarge)
                     }
                 }
 
@@ -282,14 +290,16 @@ fun EditRecipeScreen(
                     Button(
                         onClick = { editRecipeViewModel.onUpdateRecipe() },
                         enabled = !uiState.isSaving,
-                        modifier = Modifier.fillMaxWidth().height(56.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Terracotta)
                     ) {
                         if (uiState.isSaving) {
                             CircularProgressIndicator(color = Cream, modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
                         } else {
-                            Text("SAVE CHANGES", style = MaterialTheme.typography.labelLarge)
+                            Text(stringResource(R.string.btn_save_changes), style = MaterialTheme.typography.labelLarge)
                         }
                     }
                     Spacer(modifier = Modifier.height(40.dp))

@@ -10,10 +10,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
 @Composable
@@ -38,12 +40,12 @@ fun LoginScreen(loginViewModel: LoginViewModel, onNavigateToSignUp: () -> Unit, 
 
         // Greeting Section
         Text(
-            text = "Hello,",
+            text = stringResource(R.string.hello),
             style = MaterialTheme.typography.displayMedium, // ExtraBold Espresso
             fontWeight = FontWeight.ExtraBold
         )
         Text(
-            text = "Let's Cook Something Amazing",
+            text = stringResource(R.string.app_intro),
             style = MaterialTheme.typography.bodyLarge,
             color = WarmTan,
             modifier = Modifier.padding(top = 8.dp)
@@ -52,12 +54,12 @@ fun LoginScreen(loginViewModel: LoginViewModel, onNavigateToSignUp: () -> Unit, 
         Spacer(modifier = Modifier.height(48.dp))
 
         // Input Fields
-        Text("Username", style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.username_field), style = MaterialTheme.typography.labelMedium)
         OutlinedTextField(
             value = loginUIState.username,
             onValueChange = { loginViewModel.onUsernameChange(it) },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("Enter your username", color = LightTan) },
+            placeholder = { Text(stringResource(R.string.enter_your_username), color = LightTan) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = ParchmentBorder,
                 focusedBorderColor = Terracotta
@@ -66,14 +68,14 @@ fun LoginScreen(loginViewModel: LoginViewModel, onNavigateToSignUp: () -> Unit, 
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text("Password", style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.password_field), style = MaterialTheme.typography.labelMedium)
         OutlinedTextField(
             value = loginUIState.password,
             onValueChange = { loginViewModel.onPasswordChange(it) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            placeholder = { Text("Enter your password", color = LightTan) },
+            placeholder = { Text(stringResource(R.string.enter_your_password), color = LightTan) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = ParchmentBorder,
                 focusedBorderColor = Terracotta
@@ -92,10 +94,10 @@ fun LoginScreen(loginViewModel: LoginViewModel, onNavigateToSignUp: () -> Unit, 
                     onCheckedChange = { loginViewModel.onRememberMeChange(it) },
                     colors = CheckboxDefaults.colors(checkedColor = Terracotta)
                 )
-                Text("Remember me", style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.btn_remember_me), style = MaterialTheme.typography.bodySmall)
             }
             TextButton(onClick = { /* TODO */ }) {
-                Text("Forgot Password!", color = BurntRed, style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.btn_forgot_password), color = BurntRed, style = MaterialTheme.typography.bodySmall)
             }
         }
 
@@ -114,7 +116,7 @@ fun LoginScreen(loginViewModel: LoginViewModel, onNavigateToSignUp: () -> Unit, 
             if (loginUIState.isLoading) {
                 CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
             } else {
-                Text("LOG IN", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.btn_log_in), style = MaterialTheme.typography.labelLarge)
             }
         }
 
@@ -124,12 +126,12 @@ fun LoginScreen(loginViewModel: LoginViewModel, onNavigateToSignUp: () -> Unit, 
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                "Don't have an Account? ",
+                stringResource(R.string.dont_have_an_account),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 16.dp)
             )
             TextButton(onClick = onNavigateToSignUp) {
-                Text("Sign Up", color = Terracotta, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.btn_sign_up), color = Terracotta, fontWeight = FontWeight.Bold)
             }
         }
 
