@@ -42,6 +42,12 @@ object RecipeRepository {
         }
     }
 
+    fun updateRecipe(updatedRecipe: Recipe) {
+        _recipes.update { currentList ->
+            currentList.map { if (it.id == updatedRecipe.id) updatedRecipe else it }
+        }
+    }
+
     fun getRecipeById(id: String): Recipe? {
         return _recipes.value.find { it.id == id }
     }

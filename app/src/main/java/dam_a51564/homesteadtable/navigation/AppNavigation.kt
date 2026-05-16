@@ -7,6 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dam_a51564.homesteadtable.ui.screens.AddRecipeScreen
 import dam_a51564.homesteadtable.ui.screens.AddRecipeViewModel
+import dam_a51564.homesteadtable.ui.screens.EditRecipeScreen
+import dam_a51564.homesteadtable.ui.screens.EditRecipeViewModel
 import dam_a51564.homesteadtable.ui.screens.FavouritesScreen
 import dam_a51564.homesteadtable.ui.screens.FavouritesViewModel
 import dam_a51564.homesteadtable.ui.screens.HomeScreen
@@ -157,9 +159,20 @@ fun AppNavigation() {
                 viewModel = recipeDetailViewModel,
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToEdit = { recipeId ->
-                    // TODO: Navigate to Edit screen
-                    //navController.navigate("edit_recipe/$recipeId")
+                    navController.navigate("edit_recipe/$recipeId")
                 }
+            )
+        }
+
+        composable("edit_recipe/{recipeId}") { backStackEntry ->
+            val recipeId = backStackEntry.arguments?.getString("recipeId") ?: ""
+            val editRecipeViewModel: EditRecipeViewModel = viewModel()
+
+            editRecipeViewModel.loadRecipe(recipeId)
+
+            EditRecipeScreen(
+                editRecipeViewModel = editRecipeViewModel,
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }
