@@ -126,7 +126,7 @@ fun FavouritesScreen(
 
             // Category Pills
             LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 items(favouritesUIState.categories) { category ->
                     val isSelected = favouritesUIState.selectedCategory == category
@@ -196,13 +196,13 @@ fun FavouritesScreen(
                             shape = RoundedCornerShape(16.dp)
                         ) {
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.Top
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Column(modifier = Modifier
-                                    .padding(16.dp)
-                                    .weight(1f)) {
+                                Column(modifier = Modifier.weight(1f)) {
                                     Text(
                                         text = recipe.title,
                                         style = MaterialTheme.typography.headlineSmall,
@@ -216,8 +216,7 @@ fun FavouritesScreen(
                                     )
                                 }
                                 IconButton(
-                                    onClick = { favouritesViewModel.toggleFavourite(recipe.id) },
-                                    modifier = Modifier.padding(8.dp)
+                                    onClick = { favouritesViewModel.toggleFavourite(recipe.id) }
                                 ) {
                                     Icon(
                                         Icons.Filled.Favorite,

@@ -134,7 +134,11 @@ fun AddRecipeScreen(
             }
 
             // Ingredients Section
-            item { Text("Ingredients", style = MaterialTheme.typography.titleMedium, color = WarmTan) }
+            item {
+                HorizontalDivider(color = ParchmentBorder, thickness = 0.5.dp)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text("Ingredients", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+            }
 
             itemsIndexed(recipe.ingredients) { index, ingredient ->
                 Card(
@@ -209,7 +213,11 @@ fun AddRecipeScreen(
             }
 
             // Equipment Section
-            item { Text("Equipment", style = MaterialTheme.typography.titleMedium, color = WarmTan) }
+            item {
+                HorizontalDivider(color = ParchmentBorder, thickness = 0.5.dp)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text("Equipment", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+            }
 
             itemsIndexed(recipe.equipment) { index, item ->
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -235,7 +243,11 @@ fun AddRecipeScreen(
             }
 
             // Instructions Section
-            item { Text("Instructions", style = MaterialTheme.typography.titleMedium, color = WarmTan) }
+            item {
+                HorizontalDivider(color = ParchmentBorder, thickness = 0.5.dp)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text("Instructions", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+            }
 
             itemsIndexed(recipe.instructions) { index, step ->
                 Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(8.dp)) {

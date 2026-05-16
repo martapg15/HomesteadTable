@@ -17,7 +17,7 @@ object RecipeRepository {
             Recipe(
                 id = "dummy_1",
                 title = "Creamy Tomato Pasta",
-                category = "Pasta",
+                category = "Main Course",
                 baseServings = 2,
                 equipment = listOf("Large Pot", "Skillet"),
                 ingredients = listOf(

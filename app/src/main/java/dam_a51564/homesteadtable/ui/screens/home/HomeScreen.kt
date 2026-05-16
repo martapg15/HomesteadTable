@@ -201,7 +201,7 @@ fun HomeScreen(
 
             // Category Pills (Scrollable Row)
             LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 items(homeUIState.categories) { category ->
                     val isSelected = homeUIState.selectedCategory == category

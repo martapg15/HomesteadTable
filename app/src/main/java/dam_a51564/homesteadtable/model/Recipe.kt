@@ -11,7 +11,7 @@ data class Ingredient(
 data class Recipe(
     val id: String = UUID.randomUUID().toString(),
     val title: String = "",
-    val category: String = "Pasta",
+    val category: String = "Main Course",
     val baseServings: Int = 2,
     val ingredients: List<Ingredient> = emptyList(),
     val equipment: List<String> = emptyList(),
