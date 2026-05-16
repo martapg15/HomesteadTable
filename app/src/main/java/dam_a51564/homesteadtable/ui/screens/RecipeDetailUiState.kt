@@ -12,5 +12,6 @@ data class RecipeDetailUiState(
     val currentServings: Int = 1,
     val isLoading: Boolean = true,
     val selectedTab: DetailTab = DetailTab.INGREDIENTS,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val isDeleted: Boolean = false
 )

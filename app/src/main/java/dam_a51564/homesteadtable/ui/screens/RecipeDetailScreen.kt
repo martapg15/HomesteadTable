@@ -10,12 +10,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,10 +33,46 @@ import dam_a51564.homesteadtable.ui.theme.*
 @Composable
 fun RecipeDetailScreen(
     viewModel: RecipeDetailViewModel,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    onNavigateToEdit: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val recipe = uiState.recipe
+
+    // Pop-up display controller state
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
+    // Go back to home immediately if recipe gets deleted
+    LaunchedEffect(uiState.isDeleted) {
+        if (uiState.isDeleted) {
+            onNavigateBack()
+        }
+    }
+
+    // Delete Confirmation Pop-Up Alert
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = { Text("Delete Recipe", fontWeight = FontWeight.Bold, color = Espresso) },
+            text = { Text("Are you sure you want to delete recipe?", color = Espresso) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDeleteDialog = false
+                        viewModel.deleteCurrentRecipe()
+                    }
+                ) {
+                    Text("Yes, I'm sure", color = BurntRed, fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text("No", color = Espresso)
+                }
+            },
+            containerColor = Cream
+        )
+    }
 
     // If recipe is null (not loaded yet), show a loading indicator
     if (recipe == null) {
@@ -47,6 +89,13 @@ fun RecipeDetailScreen(
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Espresso)
+                    }
+                },
+                actions = {
+                    recipe.let {
+                        IconButton(onClick = { onNavigateToEdit(it.id) }) {
+                            Icon(Icons.Default.Edit, contentDescription = "Edit Recipe", tint = Espresso)
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Cream)
@@ -242,6 +291,20 @@ fun RecipeDetailScreen(
                         )
                     }
                 }
+            }
+            item {
+                Spacer(modifier = Modifier.height(32.dp))
+                Button(
+                    onClick = { showDeleteDialog = true }, // Triggers state change for pop-up
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = BurntRed),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Cream)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("DELETE RECIPE", color = Cream, style = MaterialTheme.typography.labelLarge)
+                }
+                Spacer(modifier = Modifier.height(40.dp))
             }
         }
     }

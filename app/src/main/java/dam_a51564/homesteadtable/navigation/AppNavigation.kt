@@ -155,7 +155,11 @@ fun AppNavigation() {
 
             RecipeDetailScreen(
                 viewModel = recipeDetailViewModel,
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToEdit = { recipeId ->
+                    // TODO: Navigate to Edit screen
+                    //navController.navigate("edit_recipe/$recipeId")
+                }
             )
         }
     }

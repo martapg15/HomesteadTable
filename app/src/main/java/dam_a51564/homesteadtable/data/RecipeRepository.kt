@@ -36,6 +36,12 @@ object RecipeRepository {
         _recipes.update { currentList -> currentList + recipe }
     }
 
+    fun deleteRecipe(recipeId: String) {
+        _recipes.update { currentList ->
+            currentList.filter { it.id != recipeId }
+        }
+    }
+
     fun getRecipeById(id: String): Recipe? {
         return _recipes.value.find { it.id == id }
     }

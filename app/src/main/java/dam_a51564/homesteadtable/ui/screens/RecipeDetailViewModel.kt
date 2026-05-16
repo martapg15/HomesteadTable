@@ -27,6 +27,12 @@ class RecipeDetailViewModel : ViewModel() {
         }
     }
 
+    fun deleteCurrentRecipe() {
+        val recipeId = _uiState.value.recipe?.id ?: return
+        RecipeRepository.deleteRecipe(recipeId)
+        _uiState.update { it.copy(isDeleted = true) }
+    }
+
     // Function triggered by the UI buttons to switch between lists
     fun selectTab(tab: DetailTab) {
         _uiState.update { it.copy(selectedTab = tab) }
