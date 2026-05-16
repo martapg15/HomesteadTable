@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Label
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -33,7 +34,7 @@ fun HomeScreen(
     onNavigateToFavourites: () -> Unit,
     onNavigateToProfile: () -> Unit,
     onNavigateToAddRecipe: () -> Unit,
-    onNavigateToRecipeDetail: () -> Unit
+    onNavigateToRecipeDetail: (String) -> Unit
 ) {
     val homeUIState by homeViewModel.uiState.collectAsState()
 
@@ -59,7 +60,7 @@ fun HomeScreen(
                 NavigationBarItem(
                     selected = false,
                     onClick = onNavigateToFavourites,
-                    icon = { Icon(Icons.Default.FavoriteBorder, contentDescription = "Favourites") },
+                    icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favourites") },
                     label = { Text("Favourites", style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Cream,
@@ -113,7 +114,7 @@ fun HomeScreen(
                 // List of data to loop through to avoid repeating UI code 3 times
                 val stats = listOf(
                     Triple(homeUIState.recipes.size, "Recipes", Icons.Default.Book),
-                    Triple(homeUIState.favorites.size, "Favourites", Icons.Default.FavoriteBorder),
+                    Triple(homeUIState.favorites.size, "Favourites", Icons.Filled.Favorite),
                     Triple(homeUIState.categories.size, "Categories", Icons.AutoMirrored.Filled.Label)
                 )
 
@@ -255,27 +256,44 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(homeUIState.recipes) { recipeName ->
-                        // A simple clickable card to access the details
+                    items(homeUIState.recipes) { recipe ->
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { onNavigateToRecipeDetail() },
+                                .clickable { onNavigateToRecipeDetail(recipe.id) },
                             colors = CardDefaults.cardColors(containerColor = TerracottaLight),
                             shape = RoundedCornerShape(16.dp)
                         ) {
-                            Column(modifier = Modifier.padding(16.dp)) {
-                                Text(
-                                    text = recipeName,
-                                    style = MaterialTheme.typography.headlineSmall,
-                                    color = Espresso
-                                )
-                                Text(
-                                    text = "Tap to view full recipe",
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = WarmTan,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = recipe.title,
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        color = Espresso
+                                    )
+                                    Text(
+                                        text = "Tap to view full recipe",
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = WarmTan,
+                                        modifier = Modifier.padding(top = 4.dp)
+                                    )
+                                }
+
+                                IconButton(
+                                    onClick = { homeViewModel.toggleFavourite(recipe.id) }
+                                ) {
+                                    Icon(
+                                        imageVector = if (recipe.isFavourite) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
+                                        contentDescription = "Toggle Favourite",
+                                        tint = Terracotta
+                                    )
+                                }
                             }
                         }
                     }

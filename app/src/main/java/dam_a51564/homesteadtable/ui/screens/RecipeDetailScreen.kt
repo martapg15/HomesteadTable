@@ -5,9 +5,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,11 +30,20 @@ fun RecipeDetailScreen(
     onNavigateBack: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val recipe = uiState.recipe
+
+    // If recipe is null (not loaded yet), show a loading indicator
+    if (recipe == null) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator(color = Terracotta)
+        }
+        return
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { },
+                title = { Text(recipe.title, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Espresso)
@@ -40,49 +53,98 @@ fun RecipeDetailScreen(
             )
         },
         containerColor = Cream
-    ) { paddingValues ->
-        if (uiState.isLoading) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = Terracotta)
-            }
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(horizontal = 24.dp)
-            ) {
-                // Title & Details
-                Text(
-                    text = uiState.title,
-                    style = MaterialTheme.typography.displayMedium,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = Espresso
-                )
-                Text(
-                    text = "${uiState.category} • ${uiState.portions} Portions",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = WarmTan,
-                    modifier = Modifier.padding(top = 4.dp, bottom = 16.dp)
-                )
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = 24.dp)
+        ) {
+            // Servings Selector
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(White)
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(
+                            "Portions",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = WarmTan
+                        )
+                        Text(
+                            "${uiState.currentServings} Servings",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Espresso
+                        )
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        FilledIconButton(
+                            onClick = { viewModel.onDecrementServings() },
+                            colors = IconButtonDefaults.filledIconButtonColors(
+                                containerColor = Cream,
+                                contentColor = Terracotta
+                            ),
+                            modifier = Modifier.size(40.dp)
+                        ) { Icon(Icons.Default.Remove, contentDescription = "Less") }
 
-                // Equipment Section
-                if (uiState.equipment.isNotEmpty()) {
-                    Text(
-                        text = "Equipment",
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = Espresso,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = uiState.equipment.joinToString(", "),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = WarmTan,
-                        modifier = Modifier.padding(bottom = 24.dp)
-                    )
+                        FilledIconButton(
+                            onClick = { viewModel.onIncrementServings() },
+                            colors = IconButtonDefaults.filledIconButtonColors(
+                                containerColor = Cream,
+                                contentColor = Terracotta
+                            ),
+                            modifier = Modifier.size(40.dp)
+                        ) { Icon(Icons.Default.Add, contentDescription = "More") }
+                    }
                 }
+            }
 
-                // Custom Tab Switcher (Ingredients vs Instructions)
+            // Equipment
+            if (recipe.equipment.isNotEmpty()) {
+                item {
+                    Text(
+                        "Equipment",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = Espresso
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                items(recipe.equipment) { item ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Restaurant,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = WarmTan
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = item,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Espresso
+                        )
+                    }
+                }
+            }
+
+            // The Toggle Switch
+            item {
+                Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -104,7 +166,10 @@ fun RecipeDetailScreen(
                         elevation = ButtonDefaults.buttonElevation(0.dp),
                         contentPadding = PaddingValues(vertical = 12.dp)
                     ) {
-                        Text("Ingredients", fontWeight = if (isIngredients) FontWeight.Bold else FontWeight.Medium)
+                        Text(
+                            "Ingredients",
+                            fontWeight = if (isIngredients) FontWeight.Bold else FontWeight.Medium
+                        )
                     }
 
                     Button(
@@ -118,85 +183,63 @@ fun RecipeDetailScreen(
                         elevation = ButtonDefaults.buttonElevation(0.dp),
                         contentPadding = PaddingValues(vertical = 12.dp)
                     ) {
-                        Text("Instructions", fontWeight = if (!isIngredients) FontWeight.Bold else FontWeight.Medium)
+                        Text(
+                            "Steps (${recipe.instructions.size})",
+                            fontWeight = if (!isIngredients) FontWeight.Bold else FontWeight.Medium
+                        )
                     }
                 }
-
                 Spacer(modifier = Modifier.height(16.dp))
+            }
 
-                // Scrollable List Content
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(bottom = 24.dp)
-                ) {
-                    if (uiState.selectedTab == DetailTab.INGREDIENTS) {
-                        item {
-                            Text(
-                                text = "${uiState.ingredients.size} items",
-                                style = MaterialTheme.typography.labelMedium,
-                                color = WarmTan,
-                                modifier = Modifier.padding(bottom = 12.dp)
-                            )
-                        }
-                        items(uiState.ingredients) { ingredient ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 12.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
+            // Dynamic Content (Ingredients OR Instructions)
+            if (uiState.selectedTab == DetailTab.INGREDIENTS) {
+                items(recipe.ingredients) { ingredient ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = ingredient.name,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Espresso
+                        )
+                        val scaledQty = viewModel.getScaledQuantity(ingredient.quantity)
+                        Text(
+                            text = "$scaledQty ${ingredient.unit}",
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = Terracotta
+                        )
+                    }
+                    HorizontalDivider(color = ParchmentBorder, thickness = 0.5.dp)
+                }
+            } else {
+                itemsIndexed(recipe.instructions) { index, step ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Surface(
+                            modifier = Modifier.size(28.dp),
+                            shape = CircleShape,
+                            color = TerracottaLight
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
                                 Text(
-                                    text = ingredient.name,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = Espresso
-                                )
-                                Text(
-                                    text = "${ingredient.quantity} ${ingredient.unit}",
-                                    style = MaterialTheme.typography.bodyMedium,
+                                    "${index + 1}",
+                                    color = Terracotta,
                                     fontWeight = FontWeight.Bold,
-                                    color = Terracotta
-                                )
-                            }
-                            HorizontalDivider(color = ParchmentBorder)
-                        }
-                    } else {
-                        item {
-                            Text(
-                                text = "${uiState.instructions.size} steps",
-                                style = MaterialTheme.typography.labelMedium,
-                                color = WarmTan,
-                                modifier = Modifier.padding(bottom = 12.dp)
-                            )
-                        }
-                        itemsIndexed(uiState.instructions) { index, step ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 12.dp)
-                            ) {
-                                // Step Number Box
-                                Box(
-                                    modifier = Modifier
-                                        .size(28.dp)
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(TerracottaLight),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = "${index + 1}",
-                                        style = MaterialTheme.typography.labelMedium,
-                                        fontWeight = FontWeight.Bold,
-                                        color = Terracotta
-                                    )
-                                }
-                                Spacer(modifier = Modifier.width(12.dp))
-                                Text(
-                                    text = step,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = Espresso
+                                    style = MaterialTheme.typography.labelMedium
                                 )
                             }
                         }
+                        Text(
+                            text = step,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Espresso,
+                            modifier = Modifier.weight(1f)
+                        )
                     }
                 }
             }

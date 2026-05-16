@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
@@ -51,7 +52,7 @@ fun ProfileScreen(
                 NavigationBarItem(
                     selected = false,
                     onClick = onNavigateToFavourites,
-                    icon = { Icon(Icons.Default.FavoriteBorder, contentDescription = "Favourites") },
+                    icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favourites") },
                     label = { Text("Favourites", style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Cream,

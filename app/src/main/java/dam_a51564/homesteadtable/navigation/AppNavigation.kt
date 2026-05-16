@@ -78,8 +78,8 @@ fun AppNavigation() {
                 onNavigateToAddRecipe = {
                     navController.navigate("add_recipe")
                 },
-                onNavigateToRecipeDetail = {
-                    navController.navigate("recipe_detail")
+                onNavigateToRecipeDetail = { recipeId ->
+                    navController.navigate("recipe_detail/$recipeId")
                 }
             )
         }
@@ -102,6 +102,9 @@ fun AppNavigation() {
                         launchSingleTop = true
                         restoreState = true
                     }
+                },
+                onNavigateToRecipeDetail = {
+                    navController.navigate("recipe_detail/${it}")
                 }
             )
         }
@@ -144,8 +147,12 @@ fun AppNavigation() {
         }
 
         // Recipe detail screen route
-        composable("recipe_detail") {
+        composable("recipe_detail/{recipeId}") { backStackEntry ->
+            val recipeId = backStackEntry.arguments?.getString("recipeId") ?: ""
             val recipeDetailViewModel: RecipeDetailViewModel = viewModel()
+
+            recipeDetailViewModel.loadRecipe(recipeId)
+
             RecipeDetailScreen(
                 viewModel = recipeDetailViewModel,
                 onNavigateBack = { navController.popBackStack() }

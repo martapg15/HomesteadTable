@@ -1,6 +1,7 @@
 package dam_a51564.homesteadtable.ui.screens
 
 import androidx.lifecycle.ViewModel
+import dam_a51564.homesteadtable.data.RecipeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -10,8 +11,20 @@ class RecipeDetailViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(RecipeDetailUiState())
     val uiState: StateFlow<RecipeDetailUiState> = _uiState.asStateFlow()
 
-    init {
-        loadDummyRecipe()
+    // Pass the ID from navigation to load the correct recipe
+    fun loadRecipe(recipeId: String) {
+        val recipe = RecipeRepository.getRecipeById(recipeId)
+        if (recipe != null) {
+            _uiState.update {
+                it.copy(
+                    recipe = recipe,
+                    currentServings = recipe.baseServings,
+                    isLoading = false
+                )
+            }
+        } else {
+            _uiState.update { it.copy(isLoading = false, errorMessage = "Recipe not found") }
+        }
     }
 
     // Function triggered by the UI buttons to switch between lists
@@ -19,31 +32,23 @@ class RecipeDetailViewModel : ViewModel() {
         _uiState.update { it.copy(selectedTab = tab) }
     }
 
-    private fun loadDummyRecipe() {
-        _uiState.update { state ->
-            state.copy(
-                title = "Creamy Tomato Pasta",
-                category = "Pasta",
-                portions = 2,
-                equipment = listOf("Large Pot", "Skillet", "Wooden Spoon", "Colander"),
-                ingredients = listOf(
-                    Ingredient("Penne Pasta", "250", "g"),
-                    Ingredient("Tomato Sauce", "1", "cup"),
-                    Ingredient("Heavy Cream", "1/2", "cup"),
-                    Ingredient("Garlic", "2", "cloves"),
-                    Ingredient("Parmesan", "50", "g")
-                ),
-                instructions = listOf(
-                    "Boil water in a large pot and cook pasta according to package instructions.",
-                    "In a skillet, sauté minced garlic until fragrant.",
-                    "Stir in tomato sauce and bring to a gentle simmer.",
-                    "Reduce heat, pour in heavy cream, and mix well.",
-                    "Drain pasta, add to the skillet, and toss to coat.",
-                    "Serve hot, garnished with grated Parmesan cheese."
-                ),
-                isLoading = false
-            )
+    fun onIncrementServings() = _uiState.update { it.copy(currentServings = it.currentServings + 1) }
 
+    fun onDecrementServings() {
+        if (_uiState.value.currentServings > 1) {
+            _uiState.update { it.copy(currentServings = it.currentServings - 1) }
         }
+    }
+
+    fun getScaledQuantity(baseQuantityStr: String): String {
+        val state = _uiState.value
+        val recipe = state.recipe ?: return baseQuantityStr
+
+        val baseQuantity = baseQuantityStr.toDoubleOrNull() ?: return baseQuantityStr
+
+        val scaled = (baseQuantity * state.currentServings) / recipe.baseServings
+
+        // Format to remove .0 if it's a whole number
+        return if (scaled % 1.0 == 0.0) scaled.toInt().toString() else String.format("%.1f", scaled)
     }
 }

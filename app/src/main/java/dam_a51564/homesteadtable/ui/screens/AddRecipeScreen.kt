@@ -5,76 +5,145 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddRecipeScreen(addRecipeViewModel: AddRecipeViewModel, onNavigateBack: () -> Unit
+fun AddRecipeScreen(
+    addRecipeViewModel: AddRecipeViewModel,
+    onNavigateBack: () -> Unit
 ) {
-    val addRecipeUIState by addRecipeViewModel.uiState.collectAsState()
+    val uiState by addRecipeViewModel.uiState.collectAsState()
+    val recipe = uiState.recipe
+
     val unitOptions = listOf("g", "kg", "ml", "L", "tbsp", "tsp", "cup", "unit")
 
+    // Navigate back when recipe is saved successfully
+    LaunchedEffect(uiState.isSaved) {
+        if (uiState.isSaved) {
+            onNavigateBack()
+        }
+    }
+
     Scaffold(
-        containerColor = Cream,
         topBar = {
             TopAppBar(
-                title = { Text("New Recipe", style = MaterialTheme.typography.headlineMedium) },
+                title = { Text("New Recipe", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go Back", tint = Espresso)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Cream)
             )
-        }
-    ) { paddingValues ->
+        },
+        containerColor = Cream
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(innerPadding)
                 .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            // Recipe Title
+            item { Spacer(modifier = Modifier.height(8.dp)) }
+
+            // Basic Info Section
             item {
-                Text("Recipe information", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+                Text("Basic Information", style = MaterialTheme.typography.titleMedium, color = WarmTan)
+                Spacer(modifier = Modifier.height(8.dp))
 
                 OutlinedTextField(
-                    value = addRecipeUIState.title,
-                    onValueChange = addRecipeViewModel::onTitleChange,
+                    value = recipe.title,
+                    onValueChange = { addRecipeViewModel.onTitleChange(it) },
                     label = { Text("Recipe Title") },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = White,
-                        unfocusedContainerColor = White
-                    )
+                    colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                 )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Category Dropdown
+                ExposedDropdownMenuBox(
+                    expanded = uiState.isCategoryExpanded,
+                    onExpandedChange = { addRecipeViewModel.onCategoryExpandedChange(it) }
+                ) {
+                    OutlinedTextField(
+                        value = recipe.category,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Category") },
+                        modifier = Modifier.fillMaxWidth().menuAnchor(),
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = uiState.isCategoryExpanded) },
+                        colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
+                    )
+                    ExposedDropdownMenu(
+                        expanded = uiState.isCategoryExpanded,
+                        onDismissRequest = { addRecipeViewModel.onCategoryExpandedChange(false) },
+                        modifier = Modifier.background(White)
+                    ) {
+                        uiState.categories.forEach { category ->
+                            DropdownMenuItem(
+                                text = { Text(text = category, color = Espresso) },
+                                onClick = { addRecipeViewModel.onCategorySelect(category) }
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Portions / Base Servings Input
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Base Portions (Servings)", style = MaterialTheme.typography.labelLarge, color = Espresso)
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        FilledIconButton(
+                            onClick = { if (recipe.baseServings > 1) addRecipeViewModel.onServingsChange(recipe.baseServings - 1) },
+                            modifier = Modifier.size(36.dp),
+                            shape = CircleShape,
+                            colors = IconButtonDefaults.filledIconButtonColors(containerColor = White, contentColor = Terracotta)
+                        ) { Icon(Icons.Default.Remove, "Decrease", Modifier.size(18.dp)) }
+
+                        Text("${recipe.baseServings}", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold, color = Terracotta)
+
+                        FilledIconButton(
+                            onClick = { addRecipeViewModel.onServingsChange(recipe.baseServings + 1) },
+                            modifier = Modifier.size(36.dp),
+                            shape = CircleShape,
+                            colors = IconButtonDefaults.filledIconButtonColors(containerColor = White, contentColor = Terracotta)
+                        ) { Icon(Icons.Default.Add, "Increase", Modifier.size(18.dp)) }
+                    }
+                }
             }
 
             // Ingredients Section
-            item {
-                Text("Ingredients", style = MaterialTheme.typography.titleMedium, color = WarmTan)
-            }
+            item { Text("Ingredients", style = MaterialTheme.typography.titleMedium, color = WarmTan) }
 
-            itemsIndexed(addRecipeUIState.ingredients) { index, ingredient ->
+            itemsIndexed(recipe.ingredients) { index, ingredient ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = Cream),
                     border = BorderStroke(1.dp, ParchmentBorder)
                 ) {
                     Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        // Row 1: Name + Delete
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             OutlinedTextField(
                                 value = ingredient.name,
                                 onValueChange = { addRecipeViewModel.updateIngredient(index, ingredient.copy(name = it)) },
@@ -86,12 +155,11 @@ fun AddRecipeScreen(addRecipeViewModel: AddRecipeViewModel, onNavigateBack: () -
                                 Icon(Icons.Default.Delete, contentDescription = "Remove", tint = BurntRed)
                             }
                         }
-                        // Row 2: Quantity + Unit Dropdown
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             OutlinedTextField(
                                 value = ingredient.quantity,
                                 onValueChange = { addRecipeViewModel.updateIngredient(index, ingredient.copy(quantity = it)) },
-                                label = { Text("Qty") },
+                                label = { Text("Quantity") },
                                 modifier = Modifier.weight(1f),
                                 colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                             )
@@ -133,19 +201,17 @@ fun AddRecipeScreen(addRecipeViewModel: AddRecipeViewModel, onNavigateBack: () -
             }
 
             item {
-                TextButton(onClick = addRecipeViewModel::addIngredient, modifier = Modifier.fillMaxWidth()) {
-                    Icon(Icons.Default.Add, contentDescription = null, tint = Terracotta)
-                    Spacer(modifier = Modifier.width(8.dp))
+                TextButton(onClick = { addRecipeViewModel.addIngredient() }, modifier = Modifier.fillMaxWidth()) {
+                    Icon(Icons.Default.Add, null, tint = Terracotta)
+                    Spacer(Modifier.width(8.dp))
                     Text("Add new ingredient", color = Terracotta, style = MaterialTheme.typography.labelLarge)
                 }
             }
 
             // Equipment Section
-            item {
-                Text("Equipment", style = MaterialTheme.typography.titleMedium, color = WarmTan)
-            }
+            item { Text("Equipment", style = MaterialTheme.typography.titleMedium, color = WarmTan) }
 
-            itemsIndexed(addRecipeUIState.equipment) { index, item ->
+            itemsIndexed(recipe.equipment) { index, item ->
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     OutlinedTextField(
                         value = item,
@@ -161,49 +227,58 @@ fun AddRecipeScreen(addRecipeViewModel: AddRecipeViewModel, onNavigateBack: () -
             }
 
             item {
-                TextButton(onClick = addRecipeViewModel::addEquipment, modifier = Modifier.fillMaxWidth()) {
-                    Icon(Icons.Default.Add, contentDescription = null, tint = Terracotta)
-                    Spacer(modifier = Modifier.width(8.dp))
+                TextButton(onClick = { addRecipeViewModel.addEquipment() }, modifier = Modifier.fillMaxWidth()) {
+                    Icon(Icons.Default.Add, null, tint = Terracotta)
+                    Spacer(Modifier.width(8.dp))
                     Text("Add new equipment", color = Terracotta, style = MaterialTheme.typography.labelLarge)
                 }
             }
 
             // Instructions Section
-            item {
-                Text("Instructions", style = MaterialTheme.typography.titleMedium, color = WarmTan)
-            }
+            item { Text("Instructions", style = MaterialTheme.typography.titleMedium, color = WarmTan) }
 
-            itemsIndexed(addRecipeUIState.steps) { index, step ->
+            itemsIndexed(recipe.instructions) { index, step ->
                 Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     OutlinedTextField(
                         value = step,
-                        onValueChange = { addRecipeViewModel.updateStep(index, it) },
+                        onValueChange = { addRecipeViewModel.updateInstruction(index, it) },
                         label = { Text("Step ${index + 1}") },
                         modifier = Modifier.weight(1f).heightIn(min = 100.dp),
                         maxLines = 5,
                         colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = White, unfocusedContainerColor = White)
                     )
-                    IconButton(onClick = { addRecipeViewModel.removeStep(index) }, modifier = Modifier.padding(top = 8.dp)) {
+                    IconButton(onClick = { addRecipeViewModel.removeInstruction(index) }, modifier = Modifier.padding(top = 8.dp)) {
                         Icon(Icons.Default.Delete, tint = BurntRed, contentDescription = "Remove")
                     }
                 }
             }
 
             item {
-                TextButton(onClick = addRecipeViewModel::addStep, modifier = Modifier.fillMaxWidth()) {
-                    Icon(Icons.Default.Add, contentDescription = null, tint = Terracotta)
-                    Spacer(modifier = Modifier.width(8.dp))
+                TextButton(onClick = { addRecipeViewModel.addInstruction() }, modifier = Modifier.fillMaxWidth()) {
+                    Icon(Icons.Default.Add, null, tint = Terracotta)
+                    Spacer(Modifier.width(8.dp))
                     Text("Add new step", color = Terracotta, style = MaterialTheme.typography.labelLarge)
                 }
-                Spacer(modifier = Modifier.height(32.dp))
+            }
+
+            // Save Button and Error
+            item {
+                if (uiState.errorMessage != null) {
+                    Text(text = uiState.errorMessage!!, color = BurntRed, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(bottom = 8.dp))
+                }
 
                 Button(
-                    onClick = { /* TODO: Save logic */ },
+                    onClick = { addRecipeViewModel.onSaveRecipe() },
+                    enabled = !uiState.isSaving,
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Terracotta),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Terracotta)
                 ) {
-                    Text("Save recipe", style = MaterialTheme.typography.labelLarge)
+                    if (uiState.isSaving) {
+                        CircularProgressIndicator(color = Cream, modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
+                    } else {
+                        Text("SAVE RECIPE", style = MaterialTheme.typography.labelLarge)
+                    }
                 }
                 Spacer(modifier = Modifier.height(40.dp))
             }

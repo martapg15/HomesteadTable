@@ -3,11 +3,13 @@ package dam_a51564.homesteadtable.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -24,7 +26,12 @@ import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.ui.theme.*
 
 @Composable
-fun FavouritesScreen(favouritesViewModel: FavouritesViewModel, onNavigateToHome: () -> Unit, onNavigateToProfile: () -> Unit) {
+fun FavouritesScreen(
+    favouritesViewModel: FavouritesViewModel,
+    onNavigateToHome: () -> Unit,
+    onNavigateToProfile: () -> Unit,
+    onNavigateToRecipeDetail: (String) -> Unit
+) {
     val favouritesUIState by favouritesViewModel.uiState.collectAsState()
 
     Scaffold(
@@ -49,7 +56,7 @@ fun FavouritesScreen(favouritesViewModel: FavouritesViewModel, onNavigateToHome:
                 NavigationBarItem(
                     selected = true, // Favourites is currently selected
                     onClick = { /* Already here */ },
-                    icon = { Icon(Icons.Default.FavoriteBorder, contentDescription = "Favourites") },
+                    icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favourites") },
                     label = { Text("Favourites", style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Cream,
@@ -92,7 +99,7 @@ fun FavouritesScreen(favouritesViewModel: FavouritesViewModel, onNavigateToHome:
                 modifier = Modifier.padding(top = 20.dp)
             )
             Text(
-                text = "0 saved recipes", /* TODO */
+                text = "${favouritesUIState.favouriteRecipes.size} saved recipes",
                 style = MaterialTheme.typography.bodyLarge,
                 color = WarmTan,
                 modifier = Modifier.padding(top = 4.dp)
@@ -168,12 +175,59 @@ fun FavouritesScreen(favouritesViewModel: FavouritesViewModel, onNavigateToHome:
                     )
 
                     Text(
-                        text = "Recipes you love will appear here.\nTap the ★ on any recipe to save it.",
+                        text = "Recipes you love will appear here.\nTap the ♡ on any recipe to save it.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = WarmTan,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp)
                     )
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(favouritesUIState.favouriteRecipes) { recipe ->
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onNavigateToRecipeDetail(recipe.id) },
+                            colors = CardDefaults.cardColors(containerColor = TerracottaLight),
+                            shape = RoundedCornerShape(16.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                Column(modifier = Modifier
+                                    .padding(16.dp)
+                                    .weight(1f)) {
+                                    Text(
+                                        text = recipe.title,
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        color = Espresso
+                                    )
+                                    Text(
+                                        text = "Tap to view full recipe",
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = WarmTan,
+                                        modifier = Modifier.padding(top = 4.dp)
+                                    )
+                                }
+                                IconButton(
+                                    onClick = { favouritesViewModel.toggleFavourite(recipe.id) },
+                                    modifier = Modifier.padding(8.dp)
+                                ) {
+                                    Icon(
+                                        Icons.Filled.Favorite,
+                                        contentDescription = "Remove Favourite",
+                                        tint = Terracotta
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
