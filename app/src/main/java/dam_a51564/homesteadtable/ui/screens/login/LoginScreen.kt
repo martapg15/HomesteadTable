@@ -54,12 +54,13 @@ fun LoginScreen(loginViewModel: LoginViewModel, onNavigateToSignUp: () -> Unit, 
         Spacer(modifier = Modifier.height(48.dp))
 
         // Input Fields
-        Text(stringResource(R.string.username_field), style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.email_field), style = MaterialTheme.typography.labelMedium)
         OutlinedTextField(
-            value = loginUIState.username,
-            onValueChange = { loginViewModel.onUsernameChange(it) },
+            value = loginUIState.email,
+            onValueChange = { loginViewModel.onEmailChange(it) },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(stringResource(R.string.enter_your_username), color = LightTan) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            placeholder = { Text(stringResource(R.string.enter_your_email), color = LightTan) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = ParchmentBorder,
                 focusedBorderColor = Terracotta

@@ -1,7 +1,7 @@
 package dam_a51564.homesteadtable.ui.screens.login
 
 data class LoginUiState(
-    val username: String = "",
+    val email: String = "",
     val password: String = "",
     val rememberMe: Boolean = false,
     val errorMessage: String? = null,

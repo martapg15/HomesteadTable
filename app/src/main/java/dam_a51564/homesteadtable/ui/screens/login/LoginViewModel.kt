@@ -2,7 +2,7 @@ package dam_a51564.homesteadtable.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
+import dam_a51564.homesteadtable.data.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,9 +13,9 @@ class LoginViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState()) // Backing property to avoid state updates from other classes
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-    fun onUsernameChange(newUsername: String) {
+    fun onEmailChange(newUsername: String) {
         _uiState.update { currentState ->
-            currentState.copy(username = newUsername, errorMessage = null)
+            currentState.copy(email = newUsername, errorMessage = null)
         }
     }
 
@@ -32,15 +32,23 @@ class LoginViewModel : ViewModel() {
     }
 
     fun onLoginClick() {
-        // Example of how state changes during an async operation
+        val state = _uiState.value
+
+        if (state.email.isBlank() || state.password.isBlank()) {
+            _uiState.update { it.copy(errorMessage = "Please enter your email and password") }
+            return
+        }
+
         _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
-        // TODO: In Phase 2, this is where AuthRepository will be called to check Firebase.
-        // For now, we simulate a loading state and then a success.
-        // Simulating an async Firebase call
         viewModelScope.launch {
-            delay(1000) // Simulate network delay
-            _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
+            val result = AuthRepository.login(state.email, state.password)
+
+            result.onSuccess {
+                _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
+            }.onFailure {
+                _uiState.update { it.copy(isLoading = false, errorMessage = "Invalid credentials. Please try again.") }
+            }
         }
     }
 }

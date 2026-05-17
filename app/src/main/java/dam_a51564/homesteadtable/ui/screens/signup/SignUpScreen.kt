@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,6 +21,12 @@ import dam_a51564.homesteadtable.ui.theme.*
 @Composable
 fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigateBack: () -> Unit) {
     val signUpUIState by signUpViewModel.uiState.collectAsState()
+
+    LaunchedEffect(signUpUIState.isSignUpSuccessful) {
+        if (signUpUIState.isSignUpSuccessful) {
+            onNavigateBack()
+        }
+    }
 
     Column(
         modifier = Modifier
