@@ -19,7 +19,12 @@ import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
 @Composable
-fun LoginScreen(loginViewModel: LoginViewModel, onNavigateToSignUp: () -> Unit, onLoginSuccess: () -> Unit) {
+fun LoginScreen(
+    loginViewModel: LoginViewModel,
+    onNavigateToSignUp: () -> Unit,
+    onLoginSuccess: () -> Unit,
+    onNavigateToForgotPassword: () -> Unit
+) {
     val loginUIState by loginViewModel.uiState.collectAsState()
 
     // Observe state changes: When isLoggedIn is true, trigger the navigation
@@ -97,7 +102,7 @@ fun LoginScreen(loginViewModel: LoginViewModel, onNavigateToSignUp: () -> Unit, 
                 )
                 Text(stringResource(R.string.btn_remember_me), style = MaterialTheme.typography.bodySmall)
             }
-            TextButton(onClick = { /* TODO */ }) {
+            TextButton(onClick = onNavigateToForgotPassword) {
                 Text(stringResource(R.string.btn_forgot_password), color = BurntRed, style = MaterialTheme.typography.bodySmall)
             }
         }

@@ -66,4 +66,10 @@
     <string name="btn1_sign_up">SIGN UP</string>
     <string name="already_have_an_account">"Already have an Account? "</string>
     <string name="btn1_log_in">Log In</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="reset_info">Enter your registered email below to receive password reset instructions.</string>
+    <string name="reset_sent">Reset email sent! Please check your inbox.</string>
+    <string name="email_address">Email Address</string>
+    <string name="btn_send_reset_link">SEND RESET LINK</string>
 </resources>

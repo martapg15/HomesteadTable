@@ -3,6 +3,7 @@ package dam_a51564.homesteadtable.ui.screens.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dam_a51564.homesteadtable.data.AuthRepository
+import dam_a51564.homesteadtable.data.SessionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -45,6 +46,7 @@ class LoginViewModel : ViewModel() {
             val result = AuthRepository.login(state.email, state.password)
 
             result.onSuccess {
+                SessionManager.setRememberMe(state.rememberMe)
                 _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
             }.onFailure {
                 _uiState.update { it.copy(isLoading = false, errorMessage = "Invalid credentials. Please try again.") }

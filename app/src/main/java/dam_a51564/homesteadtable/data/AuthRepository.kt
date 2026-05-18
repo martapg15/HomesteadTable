@@ -37,6 +37,15 @@ object AuthRepository {
         }
     }
 
+    suspend fun sendPasswordResetEmail(email: String): Result<Boolean> {
+        return try {
+            auth.sendPasswordResetEmail(email).await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     fun logout() {
         auth.signOut()
     }

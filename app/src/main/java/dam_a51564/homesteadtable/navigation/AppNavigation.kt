@@ -19,16 +19,18 @@ import dam_a51564.homesteadtable.ui.screens.profile.ProfileScreen
 import dam_a51564.homesteadtable.ui.screens.profile.ProfileViewModel
 import dam_a51564.homesteadtable.ui.screens.detail.RecipeDetailScreen
 import dam_a51564.homesteadtable.ui.screens.detail.RecipeDetailViewModel
+import dam_a51564.homesteadtable.ui.screens.forgot_password.ForgotPasswordScreen
+import dam_a51564.homesteadtable.ui.screens.forgot_password.ForgotPasswordViewModel
 import dam_a51564.homesteadtable.ui.screens.signup.SignUpScreen
 import dam_a51564.homesteadtable.ui.screens.signup.SignUpViewModel
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(appStart: String = "login") {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = "login" // The app starts here
+        startDestination = appStart
     ) {
         // Login Screen Route
         composable("login") {
@@ -43,7 +45,8 @@ fun AppNavigation() {
                     navController.navigate("home") {
                         popUpTo("login") { inclusive = true }
                     }
-                }
+                },
+                onNavigateToForgotPassword = { navController.navigate("forgot_password") },
             )
         }
 
@@ -164,6 +167,7 @@ fun AppNavigation() {
             )
         }
 
+        // Edit recipe screen route
         composable("edit_recipe/{recipeId}") { backStackEntry ->
             val recipeId = backStackEntry.arguments?.getString("recipeId") ?: ""
             val editRecipeViewModel: EditRecipeViewModel = viewModel()
@@ -172,6 +176,15 @@ fun AppNavigation() {
 
             EditRecipeScreen(
                 editRecipeViewModel = editRecipeViewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        // Forgot password screen route
+        composable("forgot_password") {
+            val forgotPasswordViewModel: ForgotPasswordViewModel = viewModel()
+            ForgotPasswordScreen(
+                viewModel = forgotPasswordViewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
         }
