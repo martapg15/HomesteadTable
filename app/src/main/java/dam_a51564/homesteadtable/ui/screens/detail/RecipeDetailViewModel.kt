@@ -1,11 +1,13 @@
 package dam_a51564.homesteadtable.ui.screens.detail
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dam_a51564.homesteadtable.data.RecipeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class RecipeDetailViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(RecipeDetailUiState())
@@ -29,8 +31,11 @@ class RecipeDetailViewModel : ViewModel() {
 
     fun deleteCurrentRecipe() {
         val recipeId = _uiState.value.recipe?.id ?: return
-        RecipeRepository.deleteRecipe(recipeId)
-        _uiState.update { it.copy(isDeleted = true) }
+
+        viewModelScope.launch {
+            RecipeRepository.deleteRecipe(recipeId)
+            _uiState.update { it.copy(isDeleted = true) }
+        }
     }
 
     // Function triggered by the UI buttons to switch between lists

@@ -1,5 +1,6 @@
 package dam_a51564.homesteadtable.ui.screens.favourites
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dam_a51564.homesteadtable.data.RecipeRepository
@@ -37,7 +38,14 @@ class FavouritesViewModel : ViewModel() {
     }
 
     fun toggleFavourite(recipeId: String) {
-        RecipeRepository.toggleFavourite(recipeId)
+        // Wrapped in a coroutine because toggleFavourite is now a suspend function
+        viewModelScope.launch {
+            try {
+                RecipeRepository.toggleFavourite(recipeId)
+            } catch (e: Exception) {
+                Log.e("FavouriteError", "Failed to toggle favourite state", e)
+            }
+        }
     }
 
     private fun applyFilter() {

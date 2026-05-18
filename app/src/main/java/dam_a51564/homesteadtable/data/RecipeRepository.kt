@@ -1,66 +1,73 @@
 package dam_a51564.homesteadtable.data
 
-import dam_a51564.homesteadtable.model.Ingredient
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dam_a51564.homesteadtable.model.Recipe
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.tasks.await
 
 object RecipeRepository {
+    private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+    private val recipesCollection = db.collection("recipes")
+
     private val _recipes = MutableStateFlow<List<Recipe>>(emptyList())
     val recipes: StateFlow<List<Recipe>> = _recipes.asStateFlow()
 
     init {
-        // Add one dummy recipe so your Home and Detail screens aren't empty immediately
-        addRecipe(
-            Recipe(
-                id = "dummy_1",
-                title = "Creamy Tomato Pasta",
-                category = "Main Course",
-                baseServings = 2,
-                equipment = listOf("Large Pot", "Skillet"),
-                ingredients = listOf(
-                    Ingredient("Penne Pasta", "250", "g"),
-                    Ingredient("Tomato Sauce", "1", "cup")
-                ),
-                instructions = listOf(
-                    "Boil water and cook pasta.",
-                    "Heat sauce in skillet and combine."
-                )
-            )
-        )
-    }
-
-    fun addRecipe(recipe: Recipe) {
-        _recipes.update { currentList -> currentList + recipe }
-    }
-
-    fun deleteRecipe(recipeId: String) {
-        _recipes.update { currentList ->
-            currentList.filter { it.id != recipeId }
+        // Automatically listen for the logged-in user
+        auth.addAuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                startListeningToUserRecipes(user.uid)
+            } else {
+                _recipes.value = emptyList() // Clear data when user logs out
+            }
         }
     }
 
-    fun updateRecipe(updatedRecipe: Recipe) {
-        _recipes.update { currentList ->
-            currentList.map { if (it.id == updatedRecipe.id) updatedRecipe else it }
-        }
+    private fun startListeningToUserRecipes(uid: String) {
+        // Query Firestore for recipes belonging ONLY to the logged-in user
+        recipesCollection.whereEqualTo("userId", uid)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null || snapshot == null) {
+                    return@addSnapshotListener
+                }
+
+                // Magically convert Firestore documents back into Kotlin Recipe objects
+                val recipeList = snapshot.documents.mapNotNull { doc ->
+                    doc.toObject(Recipe::class.java)
+                }
+                _recipes.value = recipeList
+            }
+    }
+
+    suspend fun addRecipe(recipe: Recipe) {
+        val uid = auth.currentUser?.uid ?: return
+        val recipeWithOwner = recipe.copy(userId = uid) // Attach the user ID
+
+        // Use the generated UUID as the document name in Firestore
+        recipesCollection.document(recipeWithOwner.id).set(recipeWithOwner).await()
+    }
+
+    suspend fun updateRecipe(recipe: Recipe) {
+        recipesCollection.document(recipe.id).set(recipe).await()
+    }
+
+    suspend fun deleteRecipe(recipeId: String) {
+        recipesCollection.document(recipeId).delete().await()
+    }
+
+    suspend fun toggleFavourite(recipeId: String) {
+        // Find current state, flip it, and update Firestore
+        val currentRecipe = _recipes.value.find { it.id == recipeId } ?: return
+        val updatedRecipe = currentRecipe.copy(isFavourite = !currentRecipe.isFavourite)
+        updateRecipe(updatedRecipe)
     }
 
     fun getRecipeById(id: String): Recipe? {
         return _recipes.value.find { it.id == id }
-    }
-
-    fun toggleFavourite(recipeId: String) {
-        _recipes.update { currentList ->
-            currentList.map { recipe ->
-                if (recipe.id == recipeId) {
-                    recipe.copy(isFavourite = !recipe.isFavourite)
-                } else {
-                    recipe
-                }
-            }
-        }
     }
 }

@@ -96,7 +96,6 @@ class AddRecipeViewModel : ViewModel() {
     fun onSaveRecipe() {
         val recipe = _uiState.value.recipe
 
-        // Basic Validation
         if (recipe.title.isBlank()) {
             _uiState.update { it.copy(errorMessage = "Please enter a title.") }
             return
@@ -105,9 +104,13 @@ class AddRecipeViewModel : ViewModel() {
         _uiState.update { it.copy(isSaving = true) }
 
         viewModelScope.launch {
-            delay(800) // Simulating save time
-            RecipeRepository.addRecipe(recipe)
-            _uiState.update { it.copy(isSaving = false, isSaved = true) }
+            try {
+                // Call the new suspend function
+                RecipeRepository.addRecipe(recipe)
+                _uiState.update { it.copy(isSaving = false, isSaved = true) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(isSaving = false, errorMessage = e.localizedMessage) }
+            }
         }
     }
 }

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dam_a51564.homesteadtable.data.RecipeRepository
 import dam_a51564.homesteadtable.model.Ingredient
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -123,9 +122,13 @@ class EditRecipeViewModel : ViewModel() {
         _uiState.update { it.copy(isSaving = true, errorMessage = null) }
 
         viewModelScope.launch {
-            delay(1000) // Simulate network delay
-            RecipeRepository.updateRecipe(recipe)
-            _uiState.update { it.copy(isSaving = false, isSaved = true) }
+            try {
+                RecipeRepository.updateRecipe(recipe)
+                _uiState.update { it.copy(isSaving = false, isSaved = true) }
+            } catch (e: Exception) {
+                // If Firestore fails, show the error to the user
+                _uiState.update { it.copy(isSaving = false, errorMessage = e.localizedMessage) }
+            }
         }
     }
 }
