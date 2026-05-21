@@ -37,7 +37,7 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background) // Cream
+            .background(MaterialTheme.colorScheme.background)
             .padding(24.dp),
         horizontalAlignment = Alignment.Start
     ) {
@@ -46,45 +46,49 @@ fun LoginScreen(
         // Greeting Section
         Text(
             text = stringResource(R.string.hello),
-            style = MaterialTheme.typography.displayMedium, // ExtraBold Espresso
-            fontWeight = FontWeight.ExtraBold
+            style = MaterialTheme.typography.displayMedium,
+            fontWeight = FontWeight.ExtraBold,
+            color = MaterialTheme.colorScheme.onBackground
         )
         Text(
             text = stringResource(R.string.app_intro),
             style = MaterialTheme.typography.bodyLarge,
-            color = WarmTan,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 8.dp)
         )
 
         Spacer(modifier = Modifier.height(48.dp))
 
-        // Input Fields
-        Text(stringResource(R.string.email_field), style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.email_field), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onBackground)
         OutlinedTextField(
             value = loginUIState.email,
             onValueChange = { loginViewModel.onEmailChange(it) },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            placeholder = { Text(stringResource(R.string.enter_your_email), color = LightTan) },
+            placeholder = { Text(stringResource(R.string.enter_your_email), color = MaterialTheme.colorScheme.onSurfaceVariant) },
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = ParchmentBorder,
-                focusedBorderColor = Terracotta
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedBorderColor = Terracotta,
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground
             )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(stringResource(R.string.password_field), style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.password_field), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onBackground)
         OutlinedTextField(
             value = loginUIState.password,
             onValueChange = { loginViewModel.onPasswordChange(it) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            placeholder = { Text(stringResource(R.string.enter_your_password), color = LightTan) },
+            placeholder = { Text(stringResource(R.string.enter_your_password), color = MaterialTheme.colorScheme.onSurfaceVariant) },
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = ParchmentBorder,
-                focusedBorderColor = Terracotta
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedBorderColor = Terracotta,
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground
             )
         )
 
@@ -100,7 +104,7 @@ fun LoginScreen(
                     onCheckedChange = { loginViewModel.onRememberMeChange(it) },
                     colors = CheckboxDefaults.colors(checkedColor = Terracotta)
                 )
-                Text(stringResource(R.string.btn_remember_me), style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.btn_remember_me), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onBackground)
             }
             TextButton(onClick = onNavigateToForgotPassword) {
                 Text(stringResource(R.string.btn_forgot_password), color = BurntRed, style = MaterialTheme.typography.bodySmall)
@@ -112,7 +116,7 @@ fun LoginScreen(
         // Login Button
         Button(
             onClick = { loginViewModel.onLoginClick() },
-            enabled = !loginUIState.isLoading, // Disable button while loading
+            enabled = !loginUIState.isLoading,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -134,6 +138,7 @@ fun LoginScreen(
             Text(
                 stringResource(R.string.dont_have_an_account),
                 style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(top = 16.dp)
             )
             TextButton(onClick = onNavigateToSignUp) {

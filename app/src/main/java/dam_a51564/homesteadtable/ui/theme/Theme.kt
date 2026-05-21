@@ -18,64 +18,42 @@ private val LightColorScheme = lightColorScheme(
 
     secondary = BurntRed,
     onSecondary = White,
-    secondaryContainer = BurntRedLight,
-    onSecondaryContainer = Espresso,
-
-    tertiary = WarmTan,
-    onTertiary = White,
-    tertiaryContainer = TerracottaMid,
-    onTertiaryContainer = Espresso,
 
     background = Cream,
     onBackground = Espresso,
 
     surface = White,
     onSurface = Espresso,
-    surfaceVariant = TerracottaLight,
     onSurfaceVariant = WarmTan,
 
     outline = ParchmentBorder,
-    outlineVariant = ParchmentBorder2,
-
-    error = BurntRed,
-    onError = White,
-    errorContainer = BurntRedLight,
-    onErrorContainer = Espresso,
+    inverseOnSurface = Cream
 )
 
 private val DarkColorScheme = darkColorScheme(
     primary = Terracotta,
     onPrimary = Espresso,
-    primaryContainer = TerracottaDark,
-    onPrimaryContainer = TerracottaLight,
+    primaryContainer = DarkPrimaryContainer,
+    onPrimaryContainer = Cream,
 
     secondary = BurntRed,
     onSecondary = Espresso,
-    secondaryContainer = BurntRedLight,
-    onSecondaryContainer = Espresso,
 
-    tertiary = LightTan,
-    onTertiary = Espresso,
-    tertiaryContainer = TerracottaDark,
-    onTertiaryContainer = TerracottaLight,
-
-    background = Espresso,
+    background = DarkBackground,
     onBackground = Cream,
 
-    surface = Espresso,
+    surface = DarkSurface,
     onSurface = Cream,
-    surfaceVariant = LigtherBrown,
     onSurfaceVariant = LightTan,
 
-    outline = TerracottaDark,
-    outlineVariant = WarmTan,
+    outline = LigtherBrown,
+    inverseOnSurface = DarkBackground
 )
 
 @Composable
 fun HomesteadTableTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

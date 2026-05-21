@@ -43,8 +43,8 @@ fun HomeScreen(
     Scaffold(
         bottomBar = {
             NavigationBar(
-                containerColor = Cream,
-                contentColor = Espresso
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onBackground
             ) {
                 NavigationBarItem(
                     selected = true,
@@ -52,11 +52,11 @@ fun HomeScreen(
                     icon = { Icon(Icons.Default.Book, contentDescription = "Cookbook") },
                     label = { Text(stringResource(R.string.btn_cookbook), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Cream,
+                        selectedIconColor = MaterialTheme.colorScheme.inverseOnSurface,
                         selectedTextColor = Terracotta,
                         indicatorColor = Terracotta,
-                        unselectedIconColor = WarmTan,
-                        unselectedTextColor = WarmTan
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
                 NavigationBarItem(
@@ -65,11 +65,11 @@ fun HomeScreen(
                     icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favourites") },
                     label = { Text(stringResource(R.string.btn_favourites), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Cream,
+                        selectedIconColor = MaterialTheme.colorScheme.inverseOnSurface,
                         selectedTextColor = Terracotta,
                         indicatorColor = Terracotta,
-                        unselectedIconColor = WarmTan,
-                        unselectedTextColor = WarmTan
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
                 NavigationBarItem(
@@ -78,11 +78,11 @@ fun HomeScreen(
                     icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
                     label = { Text(stringResource(R.string.btn_profile), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Cream,
+                        selectedIconColor = MaterialTheme.colorScheme.inverseOnSurface,
                         selectedTextColor = Terracotta,
                         indicatorColor = Terracotta,
-                        unselectedIconColor = WarmTan,
-                        unselectedTextColor = WarmTan
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
             }
@@ -92,7 +92,7 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background) // Cream
+                .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
                 .padding(horizontal = 24.dp)
         ) {
@@ -103,6 +103,7 @@ fun HomeScreen(
                 text = stringResource(R.string.my_cookbook),
                 style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(top = 20.dp)
             )
 
@@ -127,8 +128,8 @@ fun HomeScreen(
                     Surface(
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(16.dp),
-                        border = BorderStroke(1.dp, WarmTan.copy(alpha = 0.5f)),
-                        color = White
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                        color = MaterialTheme.colorScheme.surface
                     ) {
                         Row(
                             modifier = Modifier.padding(12.dp),
@@ -137,7 +138,7 @@ fun HomeScreen(
                             Icon(
                                 imageVector = icon,
                                 contentDescription = null,
-                                tint = WarmTan,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.size(18.dp)
                             )
 
@@ -148,12 +149,12 @@ fun HomeScreen(
                                     text = count.toString(),
                                     fontWeight = FontWeight.Bold,
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = Black
+                                    color = MaterialTheme.colorScheme.onBackground
                                 )
                                 Text(
                                     text = label,
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = WarmTan
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -173,11 +174,13 @@ fun HomeScreen(
                     value = homeUIState.searchQuery,
                     onValueChange = { homeViewModel.onSearchQueryChange(it) },
                     modifier = Modifier.weight(1f),
-                    placeholder = { Text(stringResource(R.string.search_your_recipes), color = LightTan) },
-                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = LightTan) },
+                    placeholder = { Text(stringResource(R.string.search_your_recipes), color = MaterialTheme.colorScheme.onSurfaceVariant) },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                     colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedBorderColor = ParchmentBorder,
-                        focusedBorderColor = Terracotta
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                        focusedBorderColor = Terracotta,
+                        focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground
                     ),
                     shape = RoundedCornerShape(12.dp),
                     singleLine = true
@@ -188,7 +191,7 @@ fun HomeScreen(
                 // "+" Button
                 Button(
                     onClick = onNavigateToAddRecipe,
-                    modifier = Modifier.size(56.dp), // Matches the default height of OutlinedTextField
+                    modifier = Modifier.size(56.dp),
                     shape = RoundedCornerShape(12.dp),
                     contentPadding = PaddingValues(0.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Terracotta)
@@ -196,7 +199,7 @@ fun HomeScreen(
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = "Add New Recipe",
-                        tint = Cream, // Keeps contrast high
+                        tint = Cream,
                         modifier = Modifier.size(28.dp)
                     )
                 }
@@ -213,13 +216,13 @@ fun HomeScreen(
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(16.dp))
-                            .background(if (isSelected) Terracotta else ParchmentBorder)
+                            .background(if (isSelected) Terracotta else MaterialTheme.colorScheme.outline)
                             .clickable { homeViewModel.onCategorySelect(category) }
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
                         Text(
                             text = category,
-                            color = if (isSelected) White else Espresso,
+                            color = if (isSelected) Cream else MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                         )
@@ -240,18 +243,18 @@ fun HomeScreen(
                         imageVector = Icons.Default.Book,
                         contentDescription = "Empty CookBook",
                         modifier = Modifier.size(64.dp),
-                        tint = ParchmentBorder
+                        tint = MaterialTheme.colorScheme.outline
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = stringResource(R.string.cookbook_empty),
                         style = MaterialTheme.typography.headlineSmall,
-                        color = Espresso
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
                         text = stringResource(R.string.cookbook_info),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = WarmTan,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp)
                     )
@@ -266,7 +269,7 @@ fun HomeScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable { onNavigateToRecipeDetail(recipe.id) },
-                            colors = CardDefaults.cardColors(containerColor = TerracottaLight),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                             shape = RoundedCornerShape(16.dp)
                         ) {
                             Row(
@@ -280,12 +283,12 @@ fun HomeScreen(
                                     Text(
                                         text = recipe.title,
                                         style = MaterialTheme.typography.headlineSmall,
-                                        color = Espresso
+                                        color = MaterialTheme.colorScheme.onBackground
                                     )
                                     Text(
                                         text = stringResource(R.string.recipe_description),
                                         style = MaterialTheme.typography.labelMedium,
-                                        color = WarmTan,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 4.dp)
                                     )
                                 }

@@ -31,7 +31,7 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigateBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background) // Cream
+            .background(MaterialTheme.colorScheme.background)
             .padding(24.dp),
         horizontalAlignment = Alignment.Start
     ) {
@@ -39,73 +39,79 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigateBack: () -> Unit) {
 
         Text(
             text = stringResource(R.string.create_account),
-            style = MaterialTheme.typography.displayMedium, // ExtraBold Espresso
-            fontWeight = FontWeight.ExtraBold
+            style = MaterialTheme.typography.displayMedium,
+            fontWeight = FontWeight.ExtraBold,
+            color = MaterialTheme.colorScheme.onBackground
         )
         Text(
             text = stringResource(R.string.signup_info),
             style = MaterialTheme.typography.bodyLarge,
-            color = WarmTan,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 8.dp)
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Username Field
-        Text(stringResource(R.string.username_field), style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.username_field), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onBackground)
         OutlinedTextField(
             value = signUpUIState.fullName,
             onValueChange = { signUpViewModel.onUsernameChange(it) },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(stringResource(R.string.enter_your_username), color = LightTan) },
+            placeholder = { Text(stringResource(R.string.enter_your_username), color = MaterialTheme.colorScheme.onSurfaceVariant) },
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = ParchmentBorder,
-                focusedBorderColor = Terracotta
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedBorderColor = Terracotta,
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground
             )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Email Field
-        Text(stringResource(R.string.email_field), style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.email_field), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onBackground)
         OutlinedTextField(
             value = signUpUIState.email,
             onValueChange = { signUpViewModel.onEmailChange(it) },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            placeholder = { Text(stringResource(R.string.enter_your_email), color = LightTan) },
+            placeholder = { Text(stringResource(R.string.enter_your_email), color = MaterialTheme.colorScheme.onSurfaceVariant) },
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = ParchmentBorder,
-                focusedBorderColor = Terracotta
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedBorderColor = Terracotta,
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground
             )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Password Fields
-        Text(stringResource(R.string.password_field), style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.password_field), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onBackground)
         OutlinedTextField(
             value = signUpUIState.password,
             onValueChange = { signUpViewModel.onPasswordChange(it) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = ParchmentBorder,
-                focusedBorderColor = Terracotta
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedBorderColor = Terracotta,
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground
             )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(stringResource(R.string.confirm_password), style = MaterialTheme.typography.labelMedium)
+        Text(stringResource(R.string.confirm_password), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onBackground)
         OutlinedTextField(
             value = signUpUIState.confirmPassword,
             onValueChange = { signUpViewModel.onConfirmPasswordChange(it) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = ParchmentBorder,
-                focusedBorderColor = Terracotta
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedBorderColor = Terracotta,
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground
             )
         )
 
@@ -146,6 +152,7 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigateBack: () -> Unit) {
             Text(
                 stringResource(R.string.already_have_an_account),
                 style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(top = 16.dp)
             )
             TextButton(onClick = onNavigateBack) {

@@ -35,8 +35,8 @@ fun ProfileScreen(
     Scaffold(
         bottomBar = {
             NavigationBar(
-                containerColor = Cream,
-                contentColor = Espresso
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onBackground
             ) {
                 NavigationBarItem(
                     selected = false,
@@ -44,11 +44,11 @@ fun ProfileScreen(
                     icon = { Icon(Icons.Default.Book, contentDescription = "CookBook") },
                     label = { Text(stringResource(R.string.btn_cookbook), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Cream,
+                        selectedIconColor = MaterialTheme.colorScheme.inverseOnSurface,
                         selectedTextColor = Terracotta,
                         indicatorColor = Terracotta,
-                        unselectedIconColor = WarmTan,
-                        unselectedTextColor = WarmTan
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
                 NavigationBarItem(
@@ -57,24 +57,24 @@ fun ProfileScreen(
                     icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favourites") },
                     label = { Text(stringResource(R.string.btn_favourites), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Cream,
+                        selectedIconColor = MaterialTheme.colorScheme.inverseOnSurface,
                         selectedTextColor = Terracotta,
                         indicatorColor = Terracotta,
-                        unselectedIconColor = WarmTan,
-                        unselectedTextColor = WarmTan
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
                 NavigationBarItem(
-                    selected = true, // Profile is selected
+                    selected = true,
                     onClick = { /* Already here */ },
                     icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
                     label = { Text(stringResource(R.string.btn_profile), style = MaterialTheme.typography.labelSmall) },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Cream,
+                        selectedIconColor = MaterialTheme.colorScheme.inverseOnSurface,
                         selectedTextColor = Terracotta,
                         indicatorColor = Terracotta,
-                        unselectedIconColor = WarmTan,
-                        unselectedTextColor = WarmTan
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
             }
@@ -83,8 +83,8 @@ fun ProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Cream)
-                .padding(innerPadding) // Use scaffold padding
+                .background(MaterialTheme.colorScheme.background)
+                .padding(innerPadding)
                 .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -95,6 +95,7 @@ fun ProfileScreen(
                 text = stringResource(R.string.my_profile),
                 style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(top = 20.dp)
             )
 
@@ -105,14 +106,14 @@ fun ProfileScreen(
                 modifier = Modifier
                     .size(120.dp)
                     .clip(CircleShape)
-                    .background(ParchmentBorder),
+                    .background(MaterialTheme.colorScheme.outline),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
                     modifier = Modifier.size(60.dp),
-                    tint = WarmTan
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
@@ -121,7 +122,7 @@ fun ProfileScreen(
             // User Info
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = White),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape = RoundedCornerShape(16.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
             ) {
@@ -129,13 +130,13 @@ fun ProfileScreen(
                     Text(
                         text = stringResource(R.string.name_info),
                         style = MaterialTheme.typography.labelSmall,
-                        color = WarmTan
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         text = profileUIState.userName,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.SemiBold,
-                        color = Espresso
+                        color = MaterialTheme.colorScheme.onBackground
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -143,13 +144,13 @@ fun ProfileScreen(
                     Text(
                         text = stringResource(R.string.email_info),
                         style = MaterialTheme.typography.labelSmall,
-                        color = WarmTan
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         text = profileUIState.email,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.SemiBold,
-                        color = Espresso
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }

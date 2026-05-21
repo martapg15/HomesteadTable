@@ -28,16 +28,16 @@ fun ForgotPasswordScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.reset_password), fontWeight = FontWeight.Bold, color = Espresso) },
+                title = { Text(stringResource(R.string.reset_password), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Espresso)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Cream)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
-        containerColor = Cream
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -50,20 +50,20 @@ fun ForgotPasswordScreen(
                 text = stringResource(R.string.forgot_your_password),
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                color = Espresso
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(R.string.reset_info),
                 style = MaterialTheme.typography.bodyLarge,
-                color = WarmTan
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
             if (uiState.isSuccess) {
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = TerracottaLight),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
@@ -77,11 +77,13 @@ fun ForgotPasswordScreen(
                     value = uiState.email,
                     onValueChange = { viewModel.onEmailChange(it) },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text(stringResource(R.string.email_address)) },
+                    label = { Text(stringResource(R.string.email_address), color = MaterialTheme.colorScheme.onSurfaceVariant) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Terracotta,
-                        unfocusedBorderColor = ParchmentBorder
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                        focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onBackground
                     )
                 )
 

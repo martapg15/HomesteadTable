@@ -55,8 +55,8 @@ fun RecipeDetailScreen(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text(stringResource(R.string.delete_recipe), fontWeight = FontWeight.Bold, color = Espresso) },
-            text = { Text(stringResource(R.string.delete_recipe_confirmation), color = Espresso) },
+            title = { Text(stringResource(R.string.delete_recipe), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground) },
+            text = { Text(stringResource(R.string.delete_recipe_confirmation), color = MaterialTheme.colorScheme.onBackground) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -69,16 +69,16 @@ fun RecipeDetailScreen(
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text(stringResource(R.string.deny_deletion), color = Espresso)
+                    Text(stringResource(R.string.deny_deletion), color = MaterialTheme.colorScheme.onBackground)
                 }
             },
-            containerColor = Cream
+            containerColor = MaterialTheme.colorScheme.background
         )
     }
 
     // If recipe is null (not loaded yet), show a loading indicator
     if (recipe == null) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center) {
             CircularProgressIndicator(color = Terracotta)
         }
         return
@@ -87,23 +87,23 @@ fun RecipeDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(recipe.title, fontWeight = FontWeight.Bold) },
+                title = { Text(recipe.title, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Espresso)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
                     }
                 },
                 actions = {
                     recipe.let {
                         IconButton(onClick = { onNavigateToEdit(it.id) }) {
-                            Icon(Icons.Default.Edit, contentDescription = "Edit Recipe", tint = Espresso)
+                            Icon(Icons.Default.Edit, contentDescription = "Edit Recipe", tint = MaterialTheme.colorScheme.onBackground)
                         }
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Cream)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
-        containerColor = Cream
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -118,7 +118,7 @@ fun RecipeDetailScreen(
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
                         .clip(RoundedCornerShape(16.dp))
-                        .background(White)
+                        .background(MaterialTheme.colorScheme.surface)
                         .padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
@@ -127,13 +127,13 @@ fun RecipeDetailScreen(
                         Text(
                             stringResource(R.string.portions),
                             style = MaterialTheme.typography.labelMedium,
-                            color = WarmTan
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
                             stringResource(R.string.servings_info, uiState.currentServings),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = Espresso
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
                     Row(
@@ -143,7 +143,7 @@ fun RecipeDetailScreen(
                         FilledIconButton(
                             onClick = { viewModel.onDecrementServings() },
                             colors = IconButtonDefaults.filledIconButtonColors(
-                                containerColor = Cream,
+                                containerColor = MaterialTheme.colorScheme.background,
                                 contentColor = Terracotta
                             ),
                             modifier = Modifier.size(40.dp)
@@ -152,7 +152,7 @@ fun RecipeDetailScreen(
                         FilledIconButton(
                             onClick = { viewModel.onIncrementServings() },
                             colors = IconButtonDefaults.filledIconButtonColors(
-                                containerColor = Cream,
+                                containerColor = MaterialTheme.colorScheme.background,
                                 contentColor = Terracotta
                             ),
                             modifier = Modifier.size(40.dp)
@@ -168,7 +168,7 @@ fun RecipeDetailScreen(
                         stringResource(R.string.equipment),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = Espresso
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                 }
@@ -181,13 +181,13 @@ fun RecipeDetailScreen(
                             Icons.Default.Restaurant,
                             contentDescription = null,
                             modifier = Modifier.size(16.dp),
-                            tint = WarmTan
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = item,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Espresso
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }
@@ -200,7 +200,7 @@ fun RecipeDetailScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(12.dp))
-                        .background(TerracottaLight)
+                        .background(MaterialTheme.colorScheme.primaryContainer)
                         .padding(4.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -210,8 +210,8 @@ fun RecipeDetailScreen(
                         onClick = { viewModel.selectTab(DetailTab.INGREDIENTS) },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (isIngredients) Terracotta else TerracottaLight,
-                            contentColor = if (isIngredients) Cream else Espresso
+                            containerColor = if (isIngredients) Terracotta else MaterialTheme.colorScheme.primaryContainer,
+                            contentColor = if (isIngredients) Cream else MaterialTheme.colorScheme.onBackground
                         ),
                         shape = RoundedCornerShape(10.dp),
                         elevation = ButtonDefaults.buttonElevation(0.dp),
@@ -227,8 +227,8 @@ fun RecipeDetailScreen(
                         onClick = { viewModel.selectTab(DetailTab.INSTRUCTIONS) },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (!isIngredients) Terracotta else TerracottaLight,
-                            contentColor = if (!isIngredients) Cream else Espresso
+                            containerColor = if (!isIngredients) Terracotta else MaterialTheme.colorScheme.primaryContainer,
+                            contentColor = if (!isIngredients) Cream else MaterialTheme.colorScheme.onBackground
                         ),
                         shape = RoundedCornerShape(10.dp),
                         elevation = ButtonDefaults.buttonElevation(0.dp),
@@ -255,7 +255,7 @@ fun RecipeDetailScreen(
                         Text(
                             text = ingredient.name,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Espresso
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                         val scaledQty = viewModel.getScaledQuantity(ingredient.quantity)
                         Text(
@@ -265,7 +265,7 @@ fun RecipeDetailScreen(
                             color = Terracotta
                         )
                     }
-                    HorizontalDivider(color = ParchmentBorder, thickness = 0.5.dp)
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outline, thickness = 0.5.dp)
                 }
             } else {
                 itemsIndexed(recipe.instructions) { index, step ->
@@ -278,7 +278,7 @@ fun RecipeDetailScreen(
                         Surface(
                             modifier = Modifier.size(28.dp),
                             shape = CircleShape,
-                            color = TerracottaLight
+                            color = MaterialTheme.colorScheme.primaryContainer
                         ) {
                             Box(contentAlignment = Alignment.Center) {
                                 Text(
@@ -292,7 +292,7 @@ fun RecipeDetailScreen(
                         Text(
                             text = step,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Espresso,
+                            color = MaterialTheme.colorScheme.onBackground,
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -301,7 +301,7 @@ fun RecipeDetailScreen(
             item {
                 Spacer(modifier = Modifier.height(32.dp))
                 Button(
-                    onClick = { showDeleteDialog = true }, // Triggers state change for pop-up
+                    onClick = { showDeleteDialog = true },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
