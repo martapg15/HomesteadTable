@@ -217,7 +217,7 @@ fun FavouritesScreen(
                                         color = MaterialTheme.colorScheme.onBackground
                                     )
                                     Text(
-                                        text = "Tap to view full recipe",
+                                        text = stringResource(R.string.recipe_description),
                                         style = MaterialTheme.typography.labelMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 4.dp)

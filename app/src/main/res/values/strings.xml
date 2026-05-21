@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HomesteadTable</string>
+    <string name="app_name" translatable="false">Homestead Table</string>
     <string name="delete_recipe">Delete Recipe</string>
     <string name="delete_recipe_confirmation">Are you sure you want to delete recipe?</string>
     <string name="confirm_deletion">Yes, I\'m sure</string>
@@ -14,10 +14,10 @@
     <string name="btn_favourites">Favourites</string>
     <string name="btn_profile">Profile</string>
     <string name="my_favourites">My Favourites,</string>
-    <string name="saved_recipes_info">%1$d saved recipes</string>
+    <string name="saved_recipes_info">%1$d saved recipe(s)</string>
     <string name="search_your_favourites">Search your favourites</string>
     <string name="no_favourites">No Favourites Yet</string>
-    <string name="favourites_info">Recipes you love will appear here.\nTap the ♡ on any recipe to save it.</string>
+    <string name="favourites_info">Recipes you love will appear here. Tap the ♡ on any recipe to save it.</string>
     <string name="my_cookbook">My Cookbook,</string>
     <string name="recipes_info">Recipes</string>
     <string name="favourites_info1">Favourites</string>
@@ -28,19 +28,19 @@
     <string name="recipe_description">Tap to view full recipe</string>
     <string name="hello">Hello,</string>
     <string name="app_intro">Let\'s Cook Something Amazing</string>
-    <string name="username_field">Username</string>
+    <string name="username_field" translatable="false">Username</string>
     <string name="password_field">Password</string>
     <string name="enter_your_username">Enter your username</string>
     <string name="enter_your_password">Enter your password</string>
-    <string name="btn_remember_me">Remember me</string>
+    <string name="btn_remember_me" translatable="false">Remember me</string>
     <string name="btn_forgot_password">Forgot Password!</string>
-    <string name="btn_log_in">LOG IN</string>
+    <string name="btn_log_in" translatable="false">LOG IN</string>
     <string name="dont_have_an_account">"Don't have an Account? "</string>
-    <string name="btn_sign_up">Sign Up</string>
+    <string name="btn_sign_up" translatable="false">Sign Up</string>
     <string name="my_profile">My Profile</string>
     <string name="name_info">NAME</string>
-    <string name="email_info">EMAIL</string>
-    <string name="btn_log_out">LOG OUT</string>
+    <string name="email_info" translatable="false">EMAIL</string>
+    <string name="btn_log_out" translatable="false">LOG OUT</string>
     <string name="new_recipe">New Recipe</string>
     <string name="basic_information_section">Basic Information</string>
     <string name="recipe_title">Recipe Title</string>
@@ -60,16 +60,16 @@
     <string name="btn_save_changes">SAVE CHANGES</string>
     <string name="create_account">Create Account,</string>
     <string name="signup_info">Join the Homestead Table</string>
-    <string name="email_field">Email</string>
+    <string name="email_field" translatable="false">Email</string>
     <string name="enter_your_email">Enter your email</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="btn1_sign_up">SIGN UP</string>
+    <string name="btn1_sign_up" translatable="false">SIGN UP</string>
     <string name="already_have_an_account">"Already have an Account? "</string>
-    <string name="btn1_log_in">Log In</string>
+    <string name="btn1_log_in" translatable="false">Log In</string>
     <string name="reset_password">Reset Password</string>
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="reset_info">Enter your registered email below to receive password reset instructions.</string>
     <string name="reset_sent">Reset email sent! Please check your inbox.</string>
-    <string name="email_address">Email Address</string>
-    <string name="btn_send_reset_link">SEND RESET LINK</string>
+    <string name="email_address">Email address</string>
+    <string name="btn_send_reset_link" translatable="false">SEND RESET LINK</string>
 </resources>
