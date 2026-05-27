@@ -1,5 +1,6 @@
 package dam_a51564.homesteadtable.ui.screens.recipe_management
 
+import android.net.Uri
 import dam_a51564.homesteadtable.model.Ingredient
 import dam_a51564.homesteadtable.model.Recipe
 import dam_a51564.homesteadtable.model.RecipeCategories
@@ -14,5 +15,6 @@ data class AddRecipeUiState(
     val isCategoryExpanded: Boolean = false,
     val isSaving: Boolean = false,
     val isSaved: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val imageUri: Uri? = null
 )

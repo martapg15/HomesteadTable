@@ -15,6 +15,7 @@ data class Recipe(
     val title: String = "",
     val category: String = "Main Course",
     val baseServings: Int = 2,
+    val imageUrl: String = "",
     val ingredients: List<Ingredient> = emptyList(),
     val equipment: List<String> = emptyList(),
     val instructions: List<String> = emptyList(),

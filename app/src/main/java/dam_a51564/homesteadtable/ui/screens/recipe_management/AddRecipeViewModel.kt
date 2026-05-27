@@ -1,10 +1,11 @@
 package dam_a51564.homesteadtable.ui.screens.recipe_management
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dam_a51564.homesteadtable.data.ImageRepository
 import dam_a51564.homesteadtable.data.RecipeRepository
 import dam_a51564.homesteadtable.model.Ingredient
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -92,24 +93,80 @@ class AddRecipeViewModel : ViewModel() {
         state.copy(recipe = state.recipe.copy(instructions = newList))
     }
 
+    fun onImageSelected(uri: Uri) {
+        _uiState.update { it.copy(imageUri = uri) }
+    }
+
+    // Helper function to explicitly validate user's inputs
+    private fun validateInputs(): String? {
+        val state = _uiState.value
+        val recipe = state.recipe
+
+        // Basic Info
+        if (recipe.title.isBlank()) return "Please enter a recipe title."
+        if (recipe.category.isBlank()) return "Please select a category."
+
+        // Image
+        if (state.imageUri == null) return "Please add a photo of your recipe."
+
+        // At least one valid ingredient (has a name and a quantity)
+        val hasValidIngredient = recipe.ingredients.any {
+            it.name.isNotBlank() && it.quantity.isNotBlank()
+        }
+        if (!hasValidIngredient) return "Please add at least one complete ingredient."
+
+        // At least one valid equipment item
+        val hasValidEquipment = recipe.equipment.any { it.isNotBlank() }
+        if (!hasValidEquipment) return "Please add at least one piece of equipment."
+
+        // At least one valid instruction step
+        val hasValidInstruction = recipe.instructions.any { it.isNotBlank() }
+        if (!hasValidInstruction) return "Please add at least one instruction step."
+
+        // If all checks pass, return null (meaning no errors)
+        return null
+    }
+
     // Save Logic
     fun onSaveRecipe() {
-        val recipe = _uiState.value.recipe
+        // Run our strict validation check
+        val validationError = validateInputs()
 
-        if (recipe.title.isBlank()) {
-            _uiState.update { it.copy(errorMessage = "Please enter a title.") }
+        // Stop immediately if validation fails and show the specific error message
+        if (validationError != null) {
+            _uiState.update { it.copy(errorMessage = validationError) }
             return
         }
 
-        _uiState.update { it.copy(isSaving = true) }
-
+        // If valid, proceed with the upload and save process
         viewModelScope.launch {
+            _uiState.update { it.copy(isSaving = true, errorMessage = null) }
+
             try {
-                // Call the new suspend function
-                RecipeRepository.addRecipe(recipe)
-                _uiState.update { it.copy(isSaving = false, isSaved = true) }
+                // Because of our validation, we know imageUri is NOT null here
+                val currentUri = _uiState.value.imageUri!!
+
+                // Upload to Cloudinary
+                val uploadedUrl = ImageRepository.uploadImage(currentUri)
+
+                val currentRecipe = _uiState.value.recipe
+
+                // Filter out any blank fields the user left empty before saving
+                val cleanRecipe = currentRecipe.copy(
+                    imageUrl = uploadedUrl,
+                    ingredients = currentRecipe.ingredients.filter { it.name.isNotBlank() && it.quantity.isNotBlank() },
+                    equipment = currentRecipe.equipment.filter { it.isNotBlank() },
+                    instructions = currentRecipe.instructions.filter { it.isNotBlank() }
+                )
+
+                // Save the clean recipe to Firebase
+                RecipeRepository.addRecipe(cleanRecipe)
+
+                // Update state on success
+                _uiState.update { it.copy(isSaved = true, isSaving = false) }
+
             } catch (e: Exception) {
-                _uiState.update { it.copy(isSaving = false, errorMessage = e.localizedMessage) }
+                _uiState.update { it.copy(errorMessage = "Failed to save: ${e.localizedMessage}", isSaving = false) }
             }
         }
     }

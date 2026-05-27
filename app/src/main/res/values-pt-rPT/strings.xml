@@ -62,4 +62,6 @@
     <string name="favourites_info1">Favoritos</string>
     <string name="categories_info">Categorias</string>
     <string name="search_your_recipes">Pesquise as suas receitas</string>
+    <string name="add_recipe_photo">Adicionar Foto</string>
+    <string name="change_photo">Mudar Foto</string>
 </resources>

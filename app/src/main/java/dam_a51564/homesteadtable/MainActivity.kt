@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.cloudinary.android.MediaManager
 import dam_a51564.homesteadtable.data.AuthRepository
 import dam_a51564.homesteadtable.data.SessionManager
 import dam_a51564.homesteadtable.navigation.AppNavigation
@@ -13,6 +14,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Initialize Cloudinary
+        val config = HashMap<String, String>()
+        config["cloud_name"] = "ddrgcvxmo"
+
+        MediaManager.init(this, config)
         SessionManager.init(this)
 
         // Logic for remember me functionality

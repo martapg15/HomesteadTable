@@ -1,5 +1,8 @@
 package dam_a51564.homesteadtable.ui.screens.recipe_management
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,9 +19,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.model.RecipeUnits
 import dam_a51564.homesteadtable.ui.theme.*
@@ -40,6 +46,15 @@ fun AddRecipeScreen(
             onNavigateBack()
         }
     }
+
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            if (uri != null) {
+                addRecipeViewModel.onImageSelected(uri)
+            }
+        }
+    )
 
     Scaffold(
         topBar = {
@@ -63,6 +78,40 @@ fun AddRecipeScreen(
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             item { Spacer(modifier = Modifier.height(8.dp)) }
+
+            // Image Selection Section
+            item {
+                if (uiState.imageUri != null) {
+                    AsyncImage(
+                        model = uiState.imageUri,
+                        contentDescription = "Selected Recipe Photo",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .clip(RoundedCornerShape(16.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                OutlinedButton(
+                    onClick = {
+                        photoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Terracotta),
+                    border = BorderStroke(1.dp, Terracotta)
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(if (uiState.imageUri == null) stringResource(R.string.add_recipe_photo) else
+                        stringResource(R.string.change_photo)
+                    )
+                }
+            }
 
             // Basic Info Section
             item {
