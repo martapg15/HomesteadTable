@@ -253,7 +253,7 @@ fun EditRecipeScreen(
                                     modifier = Modifier.weight(1.2f)
                                 ) {
                                     OutlinedTextField(
-                                        value = ingredient.unit,
+                                        value = ingredient.displayUnit,
                                         onValueChange = {},
                                         readOnly = true,
                                         label = { Text(stringResource(R.string.unit), color = MaterialTheme.colorScheme.onSurfaceVariant) },

@@ -275,7 +275,7 @@ fun RecipeDetailScreen(
                         )
                         val scaledQty = viewModel.getScaledQuantity(ingredient.quantity)
                         Text(
-                            text = "$scaledQty ${ingredient.unit}",
+                            text = "$scaledQty ${ingredient.displayUnit}",
                             style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold,
                             color = Terracotta
