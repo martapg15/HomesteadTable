@@ -1,7 +1,12 @@
 package dam_a51564.homesteadtable.model
 
+/**
+ * Constants object containing structural configurations for supported recipe categorization lists.
+ */
 object RecipeCategories {
-    // Used when creating or editing a recipe
+    /**
+     * The master collection of standard categories available when creating or editing a recipe entry.
+     */
     val list = listOf(
         "Main Course",
         "Appetizer",
@@ -13,6 +18,8 @@ object RecipeCategories {
         "Salad"
     )
 
-    // Used on Home and Favourites screens to allow clearing the filter
+    /**
+     * Filter list containing an "All" wildcard option, used on query selection hubs like Home and Favorites screens.
+     */
     val filterList = listOf("All") + list
 }

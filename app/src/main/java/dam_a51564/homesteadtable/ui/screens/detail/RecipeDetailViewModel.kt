@@ -9,11 +9,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel responsible for managing the state and business logic of the Recipe Detail screen.
+ * Handles loading recipe data, deleting recipes, scaling servings, and tab selection.
+ */
 class RecipeDetailViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(RecipeDetailUiState())
     val uiState: StateFlow<RecipeDetailUiState> = _uiState.asStateFlow()
 
-    // Pass the ID from navigation to load the correct recipe
+    /**
+     * Loads a recipe from the repository using its unique identifier.
+     *
+     * @param recipeId The unique recipe identifier string.
+     */
     fun loadRecipe(recipeId: String) {
         val recipe = RecipeRepository.getRecipeById(recipeId)
         if (recipe != null) {
@@ -29,6 +37,9 @@ class RecipeDetailViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Deletes the currently viewed recipe from the repository and updates the UI state.
+     */
     fun deleteCurrentRecipe() {
         val recipeId = _uiState.value.recipe?.id ?: return
 
@@ -38,19 +49,35 @@ class RecipeDetailViewModel : ViewModel() {
         }
     }
 
-    // Function triggered by the UI buttons to switch between lists
+    /**
+     * Updates the currently selected tab (Ingredients or Instructions) in the UI.
+     *
+     * @param tab The target [DetailTab] selected by user action.
+     */
     fun selectTab(tab: DetailTab) {
         _uiState.update { it.copy(selectedTab = tab) }
     }
 
+    /**
+     * Increments the current recipe serving size by one.
+     */
     fun onIncrementServings() = _uiState.update { it.copy(currentServings = it.currentServings + 1) }
 
+    /**
+     * Decrements the current recipe serving size by one, ensuring a minimum of 1.
+     */
     fun onDecrementServings() {
         if (_uiState.value.currentServings > 1) {
             _uiState.update { it.copy(currentServings = it.currentServings - 1) }
         }
     }
 
+    /**
+     * Calculates the scaled ingredient quantity based on the current serving size.
+     *
+     * @param baseQuantityStr String value representing the ingredient's original base portion weight or volume.
+     * @return String definition of scaled portions or the original descriptor if conversion errors occur.
+     */
     fun getScaledQuantity(baseQuantityStr: String): String {
         val state = _uiState.value
         val recipe = state.recipe ?: return baseQuantityStr
@@ -59,7 +86,7 @@ class RecipeDetailViewModel : ViewModel() {
 
         val scaled = (baseQuantity * state.currentServings) / recipe.baseServings
 
-        // Format to remove .0 if it's a whole number
+        // Format to drop trailing zeros cleanly if it evaluates to an absolute whole number
         return if (scaled % 1.0 == 0.0) scaled.toInt().toString() else String.format("%.1f", scaled)
     }
 }

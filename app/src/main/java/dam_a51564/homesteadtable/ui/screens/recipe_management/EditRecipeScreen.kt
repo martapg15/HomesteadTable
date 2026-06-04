@@ -30,6 +30,15 @@ import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.model.RecipeUnits
 import dam_a51564.homesteadtable.ui.theme.*
 
+/**
+ * Displays the screen for editing an existing recipe.
+ *
+ * Pre-populates the form fields with the current recipe's data and allows the user to modify the photo,
+ * title, category, base servings, ingredients, equipment, and step-by-step instructions.
+ *
+ * @param editRecipeViewModel The [EditRecipeViewModel] managing the pre-filled form state, media selection, and update actions.
+ * @param onNavigateBack Callback invoked to return to the previous screen or triggered automatically upon a successful update.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditRecipeScreen(

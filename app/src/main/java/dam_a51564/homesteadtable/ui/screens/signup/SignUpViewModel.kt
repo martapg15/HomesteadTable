@@ -9,26 +9,53 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel responsible for managing the state and business logic of the Sign Up screen.
+ * Handles user input validation and registers new accounts via [AuthRepository].
+ */
 class SignUpViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState: StateFlow<SignUpUiState> = _uiState.asStateFlow()
 
+    /**
+     * Updates the full name input state and clears any existing error messages.
+     *
+     * @param username Updated full name sequences.
+     */
     fun onUsernameChange(username: String) {
         _uiState.update { it.copy(fullName = username, errorMessage = null) }
     }
 
+    /**
+     * Updates the email input state and clears any existing error messages.
+     *
+     * @param newEmail Email character input fields.
+     */
     fun onEmailChange(newEmail: String) {
         _uiState.update { it.copy(email = newEmail, errorMessage = null) }
     }
 
+    /**
+     * Updates the password input state and clears any existing error messages.
+     *
+     * @param newPassword Dynamic characters mapping password entries.
+     */
     fun onPasswordChange(newPassword: String) {
         _uiState.update { it.copy(password = newPassword, errorMessage = null) }
     }
 
+    /**
+     * Updates the password confirmation input state and clears any existing error messages.
+     *
+     * @param newConfirm Verification characters array.
+     */
     fun onConfirmPasswordChange(newConfirm: String) {
         _uiState.update { it.copy(confirmPassword = newConfirm, errorMessage = null) }
     }
 
+    /**
+     * Validates inputs, ensures passwords match, and attempts to register the new user via the repository.
+     */
     fun onSignUpClick() {
         val state = _uiState.value
 

@@ -30,6 +30,19 @@ import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
+/**
+ * Displays the main Home (Cookbook) screen of the application.
+ *
+ * Shows an overview of the user's recipes, favorites, and categories through a statistics header.
+ * Includes a search bar, horizontal category filters, and a scrollable list of recipes. Allows users
+ * to toggle favorite status directly from the list or navigate to add a new recipe.
+ *
+ * @param homeViewModel The [HomeViewModel] managing the cookbook state, search, filters, and favorite toggles.
+ * @param onNavigateToFavourites Callback invoked to navigate to the Favourites screen via the bottom navigation.
+ * @param onNavigateToProfile Callback invoked to navigate to the Profile screen via the bottom navigation.
+ * @param onNavigateToAddRecipe Callback invoked to navigate to the recipe creation screen.
+ * @param onNavigateToRecipeDetail Callback invoked to navigate to the details of a specific recipe, passing its ID.
+ */
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel,

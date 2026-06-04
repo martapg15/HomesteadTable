@@ -11,6 +11,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel responsible for managing the Home screen.
+ * Handles fetching recipes, applying search and category filters, and toggling favorite statuses.
+ */
 class HomeViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -28,16 +32,31 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Updates the search query state and applies the filter.
+     *
+     * @param query Target text search keywords specified by users.
+     */
     fun onSearchQueryChange(query: String) {
         _uiState.update { it.copy(searchQuery = query) }
         applyFilter()
     }
 
+    /**
+     * Updates the selected category state and applies the filter.
+     *
+     * @param category Title name reference for targeted selection categories.
+     */
     fun onCategorySelect(category: String) {
         _uiState.update { it.copy(selectedCategory = category) }
         applyFilter()
     }
 
+    /**
+     * Toggles the favorite status of a recipe in the repository.
+     *
+     * @param recipeId Unique document identifier target key.
+     */
     fun toggleFavourite(recipeId: String) {
         // Wrapped in a coroutine because toggleFavourite is now a suspend function
         viewModelScope.launch {
@@ -49,6 +68,9 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Filters the master recipe list based on the current search query and selected category.
+     */
     private fun applyFilter() {
         val currentState = _uiState.value
         val query = currentState.searchQuery

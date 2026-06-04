@@ -8,8 +8,19 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
+/**
+ * Repository object responsible for uploading images to Cloudinary.
+ * Handles background uploads asynchronously using coroutines.
+ */
 object ImageRepository {
-    // Converts Cloudinary's callback to a Kotlin Suspend function
+    /**
+     * Uploads an image file specified by its local Uri to Cloudinary.
+     * Converts Cloudinary's callback mechanism into a Kotlin Suspend function.
+     *
+     * @param imageUri The local [Uri] of the image to be uploaded.
+     * @return The secure URL string of the uploaded image.
+     * @throws Exception if the upload fails or returns an error.
+     */
     suspend fun uploadImage(imageUri: Uri): String = suspendCancellableCoroutine { continuation ->
         MediaManager.get().upload(imageUri)
             // Using an unsigned upload preset for client-side convenience.

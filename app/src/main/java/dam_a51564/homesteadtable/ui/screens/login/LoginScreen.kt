@@ -18,6 +18,17 @@ import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
+/**
+ * Displays the login screen for the application.
+ *
+ * Provides input fields for email and password authentication, a "Remember Me" toggle, and options to
+ * navigate to the password reset or user registration screens. Triggers a navigation callback upon successful login.
+ *
+ * @param loginViewModel The [LoginViewModel] managing authentication state, input validation, and login actions.
+ * @param onNavigateToSignUp Callback invoked to navigate to the user registration screen.
+ * @param onLoginSuccess Callback invoked automatically when the login state registers as successful.
+ * @param onNavigateToForgotPassword Callback invoked to navigate to the password reset screen.
+ */
 @Composable
 fun LoginScreen(
     loginViewModel: LoginViewModel,

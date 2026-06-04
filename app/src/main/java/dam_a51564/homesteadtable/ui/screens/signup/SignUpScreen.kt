@@ -18,6 +18,15 @@ import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
+/**
+ * Displays the user registration screen.
+ *
+ * Provides form fields for creating a new account, requiring a username, email, password, and password confirmation.
+ * Handles the registration request and navigates back upon a successful sign-up.
+ *
+ * @param signUpViewModel The [SignUpViewModel] managing the registration form state, validation, and sign-up actions.
+ * @param onNavigateBack Callback invoked to navigate back to the previous screen (typically the login screen) manually or upon successful registration.
+ */
 @Composable
 fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigateBack: () -> Unit) {
     val signUpUIState by signUpViewModel.uiState.collectAsState()

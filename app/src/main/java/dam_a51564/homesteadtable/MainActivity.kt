@@ -10,6 +10,16 @@ import dam_a51564.homesteadtable.data.SessionManager
 import dam_a51564.homesteadtable.navigation.AppNavigation
 import dam_a51564.homesteadtable.ui.theme.HomesteadTableTheme
 
+/**
+ * The primary entry point of the Android application.
+ *
+ * Responsibilities include:
+ * - Initializing third-party services, such as Cloudinary [MediaManager] for image uploads.
+ * - Initializing the local [SessionManager] to handle shared preferences.
+ * - Checking the current Firebase Authentication state to determine the starting screen.
+ * - Handling the "Remember Me" session logic (automatically logging out users who opted not to be remembered upon closing the app).
+ * - Setting up the global Compose UI theme and triggering the [AppNavigation] graph.
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

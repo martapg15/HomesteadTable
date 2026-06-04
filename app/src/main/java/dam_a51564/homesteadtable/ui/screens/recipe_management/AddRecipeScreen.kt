@@ -29,6 +29,15 @@ import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.model.RecipeUnits
 import dam_a51564.homesteadtable.ui.theme.*
 
+/**
+ * Displays the screen for creating a new recipe.
+ *
+ * Features a scrollable form allowing the user to select an image, input basic information (title, category, servings),
+ * and dynamically add or remove ingredients, equipment, and instruction steps.
+ *
+ * @param addRecipeViewModel The [AddRecipeViewModel] managing the dynamic form state, image selection, and save actions.
+ * @param onNavigateBack Callback invoked to return to the previous screen or triggered automatically upon successful save.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddRecipeScreen(

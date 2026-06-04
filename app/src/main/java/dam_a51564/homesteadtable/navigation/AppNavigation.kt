@@ -24,6 +24,14 @@ import dam_a51564.homesteadtable.ui.screens.forgot_password.ForgotPasswordViewMo
 import dam_a51564.homesteadtable.ui.screens.signup.SignUpScreen
 import dam_a51564.homesteadtable.ui.screens.signup.SignUpViewModel
 
+/**
+ * Main navigation graph for the HomesteadTable application.
+ * Defines all composable routes, screen transitions, view model initializations,
+ * and navigation arguments.
+ *
+ * @param appStart The initial route string determining where the application should launch
+ * (typically "login" or "home" based on the user's authentication state).
+ */
 @Composable
 fun AppNavigation(appStart: String = "login") {
     val navController = rememberNavController()

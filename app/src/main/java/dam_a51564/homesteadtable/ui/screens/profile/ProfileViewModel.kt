@@ -7,6 +7,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+/**
+ * ViewModel responsible for managing the Profile screen.
+ * Retrieves current user data from [AuthRepository], generates display names, and handles user sign-out.
+ */
 class ProfileViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
@@ -15,6 +19,9 @@ class ProfileViewModel : ViewModel() {
         loadCurrentUser()
     }
 
+    /**
+     * Fetches the currently authenticated user and determines their display name.
+     */
     private fun loadCurrentUser() {
         // Ask Firebase for the currently logged-in user
         val user = AuthRepository.getCurrentUser()
@@ -34,6 +41,9 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Logs the current user out and updates the UI state.
+     */
     fun onLogOut() {
         // Tell Firebase to destroy the current session
         AuthRepository.logout()

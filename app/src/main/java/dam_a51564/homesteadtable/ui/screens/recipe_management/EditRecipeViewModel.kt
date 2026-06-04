@@ -12,10 +12,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel responsible for managing the Edit Recipe screen.
+ * Handles loading existing recipe data, validating form updates, and saving changes to Firestore.
+ */
 class EditRecipeViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(EditRecipeUiState())
     val uiState: StateFlow<EditRecipeUiState> = _uiState.asStateFlow()
 
+    /**
+     * Fetches an existing recipe from the repository by its identifier to populate the edit form fields.
+     *
+     * @param recipeId The unique document identifier of the target recipe in Firestore.
+     */
     fun loadRecipe(recipeId: String) {
         val existingRecipe = RecipeRepository.getRecipeById(recipeId)
         if (existingRecipe != null) {
@@ -36,27 +45,65 @@ class EditRecipeViewModel : ViewModel() {
     }
 
     // Basic Info Updates
+    /**
+     * Updates the recipe title state entry following user keystrokes in the editing form.
+     *
+     * @param title The newly updated title string.
+     */
     fun onTitleChange(title: String) = _uiState.update {
         it.copy(recipe = it.recipe.copy(title = title), errorMessage = null)
     }
 
+    /**
+     * Updates the base serving size for the recipe.
+     *
+     * @param servings Portion index count targets.
+     */
     fun onServingsChange(servings: Int) = _uiState.update {
         it.copy(recipe = it.recipe.copy(baseServings = servings))
     }
 
+    /**
+     * Updates the selected category and closes the dropdown menu.
+     *
+     * @param category Title labels describing culinary classes.
+     */
     fun onCategorySelect(category: String) = _uiState.update {
         it.copy(recipe = it.recipe.copy(category = category), isCategoryExpanded = false)
     }
 
+    /**
+     * Toggles the visibility of the category dropdown menu.
+     *
+     * @param expanded Visual display state tracking variables.
+     */
     fun onCategoryExpandedChange(expanded: Boolean) = _uiState.update {
         it.copy(isCategoryExpanded = expanded)
     }
 
+    /**
+     * Updates the selected image URI for the recipe.
+     *
+     * @param uri Local path targeting storage devices.
+     */
+    fun onImageSelected(uri: Uri) {
+        _uiState.update { it.copy(imageUri = uri) }
+    }
+
     // Ingredient Helpers
+    /**
+     * Adds a new blank ingredient to the recipe draft.
+     */
     fun addIngredient() = _uiState.update { state ->
         state.copy(recipe = state.recipe.copy(ingredients = state.recipe.ingredients + Ingredient()))
     }
 
+    /**
+     * Updates a specific ingredient in the recipe draft at the given index.
+     *
+     * @param index The position of the ingredient in the list to be modified.
+     * @param ingredient The updated ingredient data structure containing new values.
+     */
     fun updateIngredient(index: Int, ingredient: Ingredient) = _uiState.update { state ->
         val newList = state.recipe.ingredients.toMutableList()
         if (index in newList.indices) {
@@ -65,6 +112,11 @@ class EditRecipeViewModel : ViewModel() {
         state.copy(recipe = state.recipe.copy(ingredients = newList))
     }
 
+    /**
+     * Removes the ingredient at the specified index, ensuring at least one remains.
+     *
+     * @param index The position of the ingredient to be removed.
+     */
     fun removeIngredient(index: Int) = _uiState.update { state ->
         val newList = state.recipe.ingredients.toMutableList().apply {
             if (size > 1) removeAt(index)
@@ -73,10 +125,19 @@ class EditRecipeViewModel : ViewModel() {
     }
 
     // Equipment Helpers
+    /**
+     * Adds a new blank equipment item to the recipe draft.
+     */
     fun addEquipment() = _uiState.update { state ->
         state.copy(recipe = state.recipe.copy(equipment = state.recipe.equipment + ""))
     }
 
+    /**
+     * Updates the equipment item at the specified index.
+     *
+     * @param index The position of the equipment entry in the list to be modified.
+     * @param name The new name string for the equipment item.
+     */
     fun updateEquipment(index: Int, name: String) = _uiState.update { state ->
         val newList = state.recipe.equipment.toMutableList()
         if (index in newList.indices) {
@@ -85,6 +146,11 @@ class EditRecipeViewModel : ViewModel() {
         state.copy(recipe = state.recipe.copy(equipment = newList))
     }
 
+    /**
+     * Removes the equipment item at the specified index, ensuring at least one remains.
+     *
+     * @param index The position of the equipment item to be removed.
+     */
     fun removeEquipment(index: Int) = _uiState.update { state ->
         val newList = state.recipe.equipment.toMutableList().apply {
             if (size > 1) removeAt(index)
@@ -93,10 +159,19 @@ class EditRecipeViewModel : ViewModel() {
     }
 
     // Instruction Helpers
+    /**
+     * Adds a new blank instruction step to the recipe draft.
+     */
     fun addInstruction() = _uiState.update { state ->
         state.copy(recipe = state.recipe.copy(instructions = state.recipe.instructions + ""))
     }
 
+    /**
+     * Updates the instruction step at the specified index.
+     *
+     * @param index The position of the instruction step in the list to be modified.
+     * @param text The new narrative content string describing the step.
+     */
     fun updateInstruction(index: Int, text: String) = _uiState.update { state ->
         val newList = state.recipe.instructions.toMutableList()
         if (index in newList.indices) {
@@ -105,6 +180,11 @@ class EditRecipeViewModel : ViewModel() {
         state.copy(recipe = state.recipe.copy(instructions = newList))
     }
 
+    /**
+     * Removes the instruction step at the specified index, ensuring at least one remains.
+     *
+     * @param index The position of the instruction step to be removed.
+     */
     fun removeInstruction(index: Int) = _uiState.update { state ->
         val newList = state.recipe.instructions.toMutableList().apply {
             if (size > 1) removeAt(index)
@@ -112,11 +192,9 @@ class EditRecipeViewModel : ViewModel() {
         state.copy(recipe = state.recipe.copy(instructions = newList))
     }
 
-    fun onImageSelected(uri: Uri) {
-        _uiState.update { it.copy(imageUri = uri) }
-    }
-
-    // Helper function to explicitly validate user's inputs
+    /**
+     * Helper function to explicitly validate user's inputs before saving.
+     */
     private fun validateInputs(): String? {
         val state = _uiState.value
         val recipe = state.recipe
@@ -146,7 +224,10 @@ class EditRecipeViewModel : ViewModel() {
         return null
     }
 
-    // Save/Update Logic
+    /**
+     * Processes modifications applied to the active recipe. If a new local image URI is specified,
+     * it uploads the image asset to Cloudinary before performing an overwrite update in Firestore.
+     */
     fun onUpdateRecipe() {
         val validationError = validateInputs()
 

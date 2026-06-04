@@ -17,6 +17,15 @@ import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
+/**
+ * Displays the password reset screen.
+ *
+ * Allows the user to input their email address to request a password reset link.
+ * Handles loading states and displays a success confirmation once the reset request is sent.
+ *
+ * @param viewModel The [ForgotPasswordViewModel] managing the email input state and reset actions.
+ * @param onNavigateBack Callback invoked when the user taps the back navigation icon to return to the login screen.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForgotPasswordScreen(

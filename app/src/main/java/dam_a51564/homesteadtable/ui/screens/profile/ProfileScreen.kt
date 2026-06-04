@@ -23,6 +23,17 @@ import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
+/**
+ * Displays the user profile screen.
+ *
+ * Shows the authenticated user's information, such as their username and email, alongside a placeholder profile picture.
+ * Provides a logout action and bottom navigation links to switch to the Cookbook or Favourites screens.
+ *
+ * @param profileViewModel The [ProfileViewModel] managing the user's profile data and logout actions.
+ * @param onNavigateToHome Callback invoked to navigate to the Home (Cookbook) screen.
+ * @param onNavigateToFavourites Callback invoked to navigate to the Favourites screen.
+ * @param onLogOutSuccess Callback invoked after the user successfully logs out of the application.
+ */
 @Composable
 fun ProfileScreen(
     profileViewModel: ProfileViewModel,

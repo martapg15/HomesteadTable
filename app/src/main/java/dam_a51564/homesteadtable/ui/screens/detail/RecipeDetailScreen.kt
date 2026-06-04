@@ -33,6 +33,17 @@ import coil.compose.AsyncImage
 import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
+/**
+ * Displays the details of a selected recipe.
+ *
+ * This screen provides a comprehensive view of a recipe, including its image, title, and equipment needed.
+ * It features an interactive servings scaler and a toggleable tab section to switch between ingredients and instructions.
+ * Users can also trigger actions to edit or delete the current recipe.
+ *
+ * @param viewModel The [RecipeDetailViewModel] managing the state, data fetching, and business logic for this screen.
+ * @param onNavigateBack Callback invoked to return to the previous screen, which triggers automatically upon successful deletion.
+ * @param onNavigateToEdit Callback invoked to navigate to the edit screen, passing the current recipe's unique identifier.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeDetailScreen(

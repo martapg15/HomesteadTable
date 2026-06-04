@@ -27,6 +27,17 @@ import androidx.compose.ui.unit.dp
 import dam_a51564.homesteadtable.R
 import dam_a51564.homesteadtable.ui.theme.*
 
+/**
+ * Displays the user's favorite recipes.
+ *
+ * This screen allows users to view, search, and filter their favorite recipes by category.
+ * It includes a bottom navigation bar to switch between the main Cookbook, Favourites, and Profile screens.
+ *
+ * @param favouritesViewModel The [FavouritesViewModel] managing the state, search queries, and actions for the favourites screen.
+ * @param onNavigateToHome Callback invoked to navigate to the Home (Cookbook) screen.
+ * @param onNavigateToProfile Callback invoked to navigate to the Profile screen.
+ * @param onNavigateToRecipeDetail Callback invoked to navigate to the details of a selected recipe, passing its ID.
+ */
 @Composable
 fun FavouritesScreen(
     favouritesViewModel: FavouritesViewModel,
