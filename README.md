@@ -185,7 +185,7 @@ flowchart TD
 
 ---
 
-## 10. Design e User Experience (UX)
+## 10. Design and User Experience (UX)
 The UX is focused on simplicity and quick access:
 - **Clear information hierarchy:** large headers, sectioned forms, card-based recipe lists.
 - **Fast actions:** one-tap favorite toggle, add button from home, direct edit/delete in detail view.
